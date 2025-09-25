@@ -1313,12 +1313,36 @@
         tvCard.className = 'tv-card';
         
         // Add both click and touch event handlers for better mobile support
-        tvCard.addEventListener('click', (e) => {
-          e.preventDefault();
-          viewTVDetails(show.id);
+        let touchStartY = 0;
+        let touchStartX = 0;
+        let isScrolling = false;
+        
+        tvCard.addEventListener('touchstart', (e) => {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+          isScrolling = false;
+        });
+        
+        tvCard.addEventListener('touchmove', (e) => {
+          const touchY = e.touches[0].clientY;
+          const touchX = e.touches[0].clientX;
+          const deltaY = Math.abs(touchY - touchStartY);
+          const deltaX = Math.abs(touchX - touchStartX);
+          
+          // If user is scrolling (moving more than 10px), don't trigger tap
+          if (deltaY > 10 || deltaX > 10) {
+            isScrolling = true;
+          }
         });
         
         tvCard.addEventListener('touchend', (e) => {
+          if (!isScrolling) {
+            e.preventDefault();
+            viewTVDetails(show.id);
+          }
+        });
+        
+        tvCard.addEventListener('click', (e) => {
           e.preventDefault();
           viewTVDetails(show.id);
         });
