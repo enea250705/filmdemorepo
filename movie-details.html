@@ -386,13 +386,27 @@
       
       /* Make video player bigger on mobile */
       .video-player-wrapper {
-        padding-bottom: 60%; /* Much larger aspect ratio for mobile */
+        padding-bottom: 75%; /* Even larger aspect ratio for mobile */
       }
       
       .video-player-container {
         margin-top: 15px;
         border-radius: 8px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: none;
+      }
+      
+      /* Make video player full width on mobile */
+      .movie-detail-content {
+        padding: 0 10px;
+      }
+      
+      .video-player-container {
+        margin-left: -10px;
+        margin-right: -10px;
+        width: calc(100% + 20px);
       }
       
       /* Optimize video player controls for mobile */
@@ -409,6 +423,32 @@
       .server-tabs {
         margin-bottom: 15px;
       }
+    }
+
+    /* Simplified Footer Styles */
+    .footer {
+      background: var(--black);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-logo .logo {
+      transition: transform 0.3s ease;
+    }
+
+    .footer-logo .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .footer-logo .logo img {
+      height: 50px;
+      width: auto;
     }
   </style>
 
@@ -629,111 +669,13 @@
   -->
 
   <footer class="footer">
-
-    <div class="footer-top">
-      <div class="container">
-
-        <div class="footer-brand-wrapper">
-
-          <a href="./index.html" class="logo">
-            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
-          </a>
-
-          <ul class="footer-list">
-
-            <li>
-              <a href="./index.html" class="footer-link">Home</a>
-            </li>
-
-            <li>
-              <a href="./movies.html" class="footer-link">Movies</a>
-            </li>
-
-            <li>
-              <a href="./tv-series.html" class="footer-link">TV Shows</a>
-            </li>
-
-            <li>
-              <a href="./genres.html" class="footer-link">Genres</a>
-            </li>
-
-            <li>
-              <a href="#" class="footer-link">Pricing</a>
-            </li>
-
-          </ul>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="quicklink-wrapper">
-
-          <ul class="quicklink-list">
-
-            <li>
-              <a href="#" class="quicklink-link">Faq</a>
-            </li>
-
-            <li>
-              <a href="#" class="quicklink-link">Help center</a>
-            </li>
-
-            <li>
-              <a href="#" class="quicklink-link">Terms of use</a>
-            </li>
-
-            <li>
-              <a href="#" class="quicklink-link">Privacy</a>
-            </li>
-
-          </ul>
-
-          <ul class="social-list">
-
-            <li>
-              <a href="#" class="social-link">
-                <ion-icon name="logo-facebook"></ion-icon>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" class="social-link">
-                <ion-icon name="logo-twitter"></ion-icon>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" class="social-link">
-                <ion-icon name="logo-pinterest"></ion-icon>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" class="social-link">
-                <ion-icon name="logo-linkedin"></ion-icon>
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
+    <div class="container">
+      <div class="footer-logo">
+        <a href="./index.html" class="logo">
+          <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+        </a>
       </div>
     </div>
-
-    <div class="footer-bottom">
-      <div class="container">
-
-        <p class="copyright">
-          &copy; 2022 <a href="#">codewithsadee</a>. All Rights Reserved
-        </p>
-
-        <img src="./assets/images/footer-bottom-img.png" alt="Online banking companies logo" class="footer-bottom-img">
-
-      </div>
-    </div>
-
   </footer>
 
 
