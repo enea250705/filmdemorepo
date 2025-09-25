@@ -396,6 +396,38 @@
     .page-subtitle {
       color: var(--gray);
       font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .page-switch {
+      margin-top: 20px;
+    }
+
+    .switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #f5c518 0%, #d4af0a 100%);
+      color: #1a1a1a;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
+      border: none;
+      cursor: pointer;
+    }
+
+    .switch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 197, 24, 0.4);
+      background: linear-gradient(135deg, #d4af0a 0%, #f5c518 100%);
+    }
+
+    .switch-btn ion-icon {
+      font-size: 1.1rem;
     }
     
     .filters-section {
@@ -645,6 +677,15 @@
       .tv-grid {
         grid-template-columns: 1fr 1fr;
         gap: 30px;
+      }
+      
+      .page-title {
+        font-size: 2rem;
+      }
+      
+      .switch-btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
       }
     }
     
@@ -932,6 +973,12 @@
         <div class="page-header">
           <h1 class="page-title">TV Shows</h1>
           <p class="page-subtitle">Discover the latest and greatest TV series</p>
+          <div class="page-switch">
+            <a href="./movies.html" class="switch-btn">
+              <ion-icon name="film-outline"></ion-icon>
+              Switch to Movies
+            </a>
+          </div>
         </div>
 
         <!-- Search Section -->
