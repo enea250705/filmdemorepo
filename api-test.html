@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+            background: #1a1a1a;
+            color: white;
+    }
+        .test-container {
+            margin: 20px 0;
+      padding: 20px;
+            background: #2d2d2d;
+      border-radius: 8px;
+    }
+        .test-btn {
+      padding: 10px 20px;
+            background: #f5c518;
+            color: black;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+            margin: 5px;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #4caf50;
+    }
+  </style>
+</head>
+<body>
+    <h1>API Test Page</h1>
+    
+    <div class="test-container">
+        <h2>Direct API Test</h2>
+        <button class="test-btn" onclick="testDirectAPI()">Test Direct TMDb API Call</button>
+        <button class="test-btn" onclick="testMovieAPI()">Test Movie API Object</button>
+        <button class="test-btn" onclick="testSearchFunction()">Test Search Function</button>
+        <div id="api-result" class="result"></div>
+    </div>
+
+    <script>
+        async function testDirectAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.textContent = 'Testing direct API call...';
+            
+            try {
+                const apiKey = '8965fbadc030be023610b3b57f7ad1d9';
+                const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=batman`;
+                
+                console.log('Testing direct API call to:', url);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('API response:', data);
+                
+                resultDiv.textContent = `SUCCESS: Found ${data.results.length} movies\n` +
+                    `Total results: ${data.total_results}\n` +
+                    `First movie: ${data.results[0]?.title || 'N/A'}`;
+                resultDiv.className = 'result success';
+                
+            } catch (error) {
+                console.error('Direct API test error:', error);
+                resultDiv.textContent = `ERROR: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function testMovieAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.textContent = 'Testing Movie API object...';
+            
+            try {
+                // Load the movie API script
+                if (typeof window.movieAPI === 'undefined') {
+                    // Try to load it
+                    const script = document.createElement('script');
+                    script.src = './assets/js/movie-api.js';
+                    script.onload = () => {
+                        testMovieAPI();
+                    };
+                    script.onerror = () => {
+                        resultDiv.textContent = 'ERROR: Failed to load movie-api.js';
+                        resultDiv.className = 'result error';
+                    };
+                    document.head.appendChild(script);
+          return;
+        }
+        
+                console.log('Movie API object:', window.movieAPI);
+                console.log('Search movies function:', window.movieAPI.searchMovies);
+                
+                resultDiv.textContent = `SUCCESS: Movie API loaded\n` +
+                    `Available methods: ${Object.getOwnPropertyNames(Object.getPrototypeOf(window.movieAPI)).join(', ')}`;
+                resultDiv.className = 'result success';
+                
+      } catch (error) {
+                console.error('Movie API test error:', error);
+                resultDiv.textContent = `ERROR: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function testSearchFunction() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.textContent = 'Testing search function...';
+            
+            try {
+                if (typeof window.movieAPI === 'undefined') {
+                    throw new Error('Movie API not loaded');
+                }
+                
+                console.log('Testing searchMovies function');
+                const result = await window.movieAPI.searchMovies('batman', 1);
+                console.log('Search result:', result);
+                
+                if (result && result.movies) {
+                    resultDiv.textContent = `SUCCESS: Search function works\n` +
+                        `Found ${result.movies.length} movies\n` +
+                        `Total pages: ${result.totalPages}\n` +
+                        `First movie: ${result.movies[0]?.title || 'N/A'}`;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.textContent = 'ERROR: Search function returned invalid result';
+                    resultDiv.className = 'result error';
+                }
+                
+      } catch (error) {
+                console.error('Search function test error:', error);
+                resultDiv.textContent = `ERROR: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        // Auto-test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('API test page loaded');
+            setTimeout(() => {
+                testMovieAPI();
+            }, 1000);
+    });
+  </script>
+</body>
+</html>

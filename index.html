@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FilmHaven - Best movie collections</title>
+  
+  <!-- Redirect to movies page -->
+  <script>
+    window.location.href = './movies.html';
+  </script>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Working Ad Script - 3 Ads Per Page -->
+  <script type="text/javascript">
+    (function() {
+      let adCount = 0;
+      let maxAds = 3;
+      let adTriggered = false;
+      
+      // Ad URLs (replace with your actual monetized URLs)
+      const adUrls = [
+        'https://www.google.com',
+        'https://www.bing.com', 
+        'https://www.yahoo.com'
+      ];
+      
+      function triggerAd() {
+        if (adCount >= maxAds) return;
+        
+        try {
+          const adUrl = adUrls[adCount % adUrls.length];
+          const popup = window.open(adUrl, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+          
+          if (popup) {
+            popup.blur();
+            window.focus();
+            adCount++;
+            console.log(`Ad ${adCount} triggered: ${adUrl}`);
+            
+            // Trigger next ad after delay
+            if (adCount < maxAds) {
+              setTimeout(() => {
+                triggerAd();
+              }, 2000);
+            }
+          } else {
+            console.log('Ad blocked by browser');
+          }
+        } catch (e) {
+          console.log('Ad error:', e);
+        }
+      }
+      
+      // Trigger ads on user interactions
+      let clickCount = 0;
+      document.addEventListener('click', function() {
+        clickCount++;
+        if (clickCount >= 2 && !adTriggered) {
+          adTriggered = true;
+          triggerAd();
+        }
+      });
+      
+      document.addEventListener('scroll', function() {
+        if (!adTriggered) {
+          adTriggered = true;
+          triggerAd();
+        }
+      });
+      
+      // Auto-trigger after page load
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          if (!adTriggered) {
+            adTriggered = true;
+            triggerAd();
+          }
+        }, 3000);
+      });
+      
+      console.log('Working ad system initialized - 3 ads per page');
+    })();
+  </script>
+
+  <style>
+    /* Dropdown Styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #1a1a1a;
+      min-width: 400px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      padding: 16px;
+    }
+    
+    .dropdown-content a {
+      color: #ffffff;
+      padding: 8px 12px;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s ease;
+      font-size: 0.8rem;
+      margin: 2px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    
+    .dropdown-content a:hover {
+      background: #ffd700;
+      color: #000000;
+      border-color: #ffd700;
+    }
+    
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown.active .navbar-link {
+      color: #ffd700;
+    }
+    
+    /* Mobile dropdown */
+    @media (max-width: 768px) {
+      .dropdown-content {
+        position: static;
+        display: none;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        margin-top: 0;
+      }
+      
+      .dropdown.active .dropdown-content {
+        display: block;
+      }
+    }
+  </style>
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="./index.html" class="logo">
+        <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+      </a>
+
+      <div class="header-actions">
+
+        <button class="search-btn">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+
+        <div class="lang-wrapper">
+          <label for="language">
+            <ion-icon name="globe-outline"></ion-icon>
+          </label>
+
+          <select name="language" id="language">
+            <option value="en">EN</option>
+            <option value="au">AU</option>
+            <option value="ar">AR</option>
+            <option value="tu">TU</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary">Sign in</button>
+
+      </div>
+
+      <button class="menu-open-btn" data-menu-open-btn>
+        <ion-icon name="reorder-two"></ion-icon>
+      </button>
+
+      <nav class="navbar" data-navbar>
+
+        <div class="navbar-top">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <button class="menu-close-btn" data-menu-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+        <ul class="navbar-list">
+
+          <li>
+            <a href="./index.html" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="./movies.html" class="navbar-link">Movies</a>
+          </li>
+
+          <li>
+            <a href="./tv-series.html" class="navbar-link">TV Shows</a>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="navbar-link" onclick="toggleDropdown(event)">Genres</a>
+            <div class="dropdown-content" id="genres-dropdown">
+              <a href="./movies.html?genre=28&name=Action">Action</a>
+              <a href="./movies.html?genre=12&name=Adventure">Adventure</a>
+              <a href="./movies.html?genre=16&name=Animation">Animation</a>
+              <a href="./movies.html?genre=35&name=Comedy">Comedy</a>
+              <a href="./movies.html?genre=80&name=Crime">Crime</a>
+              <a href="./movies.html?genre=99&name=Documentary">Documentary</a>
+              <a href="./movies.html?genre=18&name=Drama">Drama</a>
+              <a href="./movies.html?genre=10751&name=Family">Family</a>
+              <a href="./movies.html?genre=14&name=Fantasy">Fantasy</a>
+              <a href="./movies.html?genre=36&name=History">History</a>
+              <a href="./movies.html?genre=27&name=Horror">Horror</a>
+              <a href="./movies.html?genre=10402&name=Music">Music</a>
+              <a href="./movies.html?genre=9648&name=Mystery">Mystery</a>
+              <a href="./movies.html?genre=10749&name=Romance">Romance</a>
+              <a href="./movies.html?genre=878&name=Science Fiction">Science Fiction</a>
+              <a href="./movies.html?genre=10770&name=TV Movie">TV Movie</a>
+              <a href="./movies.html?genre=53&name=Thriller">Thriller</a>
+              <a href="./movies.html?genre=10752&name=War">War</a>
+              <a href="./movies.html?genre=37&name=Western">Western</a>
+            </div>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Pricing</a>
+          </li>
+
+        </ul>
+
+        <ul class="navbar-social-list">
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-pinterest"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    <article>
+
+      <!-- 
+        - #HERO
+      -->
+
+      <section class="hero">
+        <div class="container">
+
+          <div class="hero-content">
+
+            <p class="hero-subtitle">FilmHaven</p>
+
+            <h1 class="h1 hero-title">
+              Unlimited <strong>Movie</strong>, TVs Shows, & More.
+            </h1>
+
+            <div class="meta-wrapper">
+
+              <div class="badge-wrapper">
+                <div class="badge badge-fill">PG 18</div>
+
+                <div class="badge badge-outline">HD</div>
+              </div>
+
+              <div class="ganre-wrapper">
+                <a href="#">Romance,</a>
+
+                <a href="#">Drama</a>
+              </div>
+
+              <div class="date-time">
+
+                <div>
+                  <ion-icon name="calendar-outline"></ion-icon>
+
+                  <time datetime="2022">2022</time>
+                </div>
+
+                <div>
+                  <ion-icon name="time-outline"></ion-icon>
+
+                  <time datetime="PT128M">128 min</time>
+                </div>
+
+              </div>
+
+            </div>
+
+            <button class="btn btn-primary">
+              <ion-icon name="play"></ion-icon>
+
+              <span>Watch now</span>
+            </button>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #UPCOMING
+      -->
+
+      <section class="upcoming">
+        <div class="container">
+
+          <div class="flex-wrapper">
+
+            <div class="title-wrapper">
+              <p class="section-subtitle">Online Streaming</p>
+
+              <h2 class="h2 section-title">Most Watched</h2>
+            </div>
+
+            <ul class="filter-list">
+
+              <li>
+                <button class="filter-btn">Movies</button>
+              </li>
+
+              <li>
+                <button class="filter-btn">TV Shows</button>
+              </li>
+
+              <li>
+                <button class="filter-btn">Anime</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <ul class="movies-list has-scrollbar">
+            <!-- Movies will be loaded dynamically by JavaScript -->
+          </ul>
+
+        </div>
+      </section>
+
+
+
+
+
+
+
+
+
+
+      <!-- 
+        - #TOP RATED
+      -->
+
+      <section class="top-rated">
+        <div class="container">
+
+          <p class="section-subtitle">Online Streaming</p>
+
+          <h2 class="h2 section-title">Top Rated Movies</h2>
+
+          <ul class="movies-list has-scrollbar">
+            <!-- Movies will be loaded dynamically by JavaScript -->
+          </ul>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #TV SERIES
+      -->
+
+      <section class="tv-series">
+        <div class="container">
+
+          <p class="section-subtitle">Best TV Series</p>
+
+          <h2 class="h2 section-title">World Best TV Series</h2>
+
+          <ul class="movies-list has-scrollbar">
+            <!-- TV Series will be loaded dynamically by JavaScript -->
+          </ul>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #CTA
+      -->
+
+      <section class="cta">
+        <div class="container">
+
+          <div class="title-wrapper">
+            <h2 class="cta-title">Trial start first 30 days.</h2>
+
+            <p class="cta-text">
+              Enter your email to create or restart your membership.
+            </p>
+          </div>
+
+          <form action="" class="cta-form">
+            <input type="email" name="email" required placeholder="Enter your email" class="email-field">
+
+            <button type="submit" class="cta-form-btn">Get started</button>
+          </form>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand-wrapper">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <ul class="footer-list">
+
+            <li>
+              <a href="./index.html" class="footer-link">Home</a>
+            </li>
+
+            <li>
+              <a href="./movies.html" class="footer-link">Movies</a>
+            </li>
+
+            <li>
+              <a href="./tv-series.html" class="footer-link">TV Shows</a>
+            </li>
+
+            <li>
+              <a href="./genres.html" class="footer-link">Genres</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">Pricing</a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="quicklink-wrapper">
+
+          <ul class="quicklink-list">
+
+            <li>
+              <a href="#" class="quicklink-link">Faq</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Help center</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Terms of use</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Privacy</a>
+            </li>
+
+          </ul>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-pinterest"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; 2022 <a href="#">codewithsadee</a>. All Rights Reserved
+        </p>
+
+        <img src="./assets/images/footer-bottom-img.png" alt="Online banking companies logo" class="footer-bottom-img">
+
+      </div>
+    </div>
+
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- 
+    - custom js link - Load AFTER ads
+  -->
+  <script src="./assets/js/movie-api.js"></script>
+  <script src="./assets/js/script.js"></script>
+
+  <script>
+    // Toggle dropdown on click
+    function toggleDropdown(event) {
+      event.preventDefault();
+      const dropdown = event.target.closest('.dropdown');
+      const isActive = dropdown.classList.contains('active');
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+      
+      // Toggle current dropdown
+      if (!isActive) {
+        dropdown.classList.add('active');
+      }
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+      }
+    });
+  </script>
+
+</body>
+
+</html>

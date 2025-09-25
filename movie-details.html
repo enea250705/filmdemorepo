@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Guy 2021</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Working Ad Script - 3 Ads Per Page -->
+  <script type="text/javascript">
+    (function() {
+      let adCount = 0;
+      let maxAds = 3;
+      let adTriggered = false;
+      
+      // Ad URLs (replace with your actual monetized URLs)
+      const adUrls = [
+        'https://www.google.com',
+        'https://www.bing.com', 
+        'https://www.yahoo.com'
+      ];
+      
+      function triggerAd() {
+        if (adCount >= maxAds) return;
+        
+        try {
+          const adUrl = adUrls[adCount % adUrls.length];
+          const popup = window.open(adUrl, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+          
+          if (popup) {
+            popup.blur();
+            window.focus();
+            adCount++;
+            console.log(`Ad ${adCount} triggered: ${adUrl}`);
+            
+            // Trigger next ad after delay
+            if (adCount < maxAds) {
+              setTimeout(() => {
+                triggerAd();
+              }, 2000);
+            }
+          } else {
+            console.log('Ad blocked by browser');
+          }
+        } catch (e) {
+          console.log('Ad error:', e);
+        }
+      }
+      
+      // Trigger ads on user interactions
+      let clickCount = 0;
+      document.addEventListener('click', function() {
+        clickCount++;
+        if (clickCount >= 2 && !adTriggered) {
+          adTriggered = true;
+          triggerAd();
+        }
+      });
+      
+      document.addEventListener('scroll', function() {
+        if (!adTriggered) {
+          adTriggered = true;
+          triggerAd();
+        }
+      });
+      
+      // Auto-trigger after page load
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          if (!adTriggered) {
+            adTriggered = true;
+            triggerAd();
+          }
+        }, 3000);
+      });
+      
+      console.log('Working ad system initialized - 3 ads per page');
+    })();
+  </script>
+
+  <style>
+    /* Movie Detail Layout */
+    .movie-detail-layout {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    
+    .movie-detail-banner {
+      flex: 0 0 300px;
+      position: relative;
+    }
+    
+    .movie-detail-banner img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .movie-detail-content {
+      flex: 1;
+      padding-left: 20px;
+    }
+    
+    /* Server Tabs */
+    .server-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    
+    /* Hide the 4th grid cell since we only have 3 servers */
+    .server-tab:nth-child(4) {
+      display: none;
+    }
+    
+    .server-tab {
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      min-height: 50px;
+    }
+    
+    .server-tab:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #f5c518;
+    }
+    
+    .server-tab.active {
+      background: #f5c518;
+      border-color: #f5c518;
+      color: #000;
+    }
+    
+    .server-tab .server-icon {
+      font-size: 16px;
+    }
+    
+    .server-tab .server-quality {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    /* Video Player Container */
+    .video-player-container {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-top: 20px;
+    }
+    
+    .video-player-wrapper {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 35%; /* Much larger aspect ratio for bigger frame */
+      background: #000;
+    }
+    
+    .video-player-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .video-player-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .player-info {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .player-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .player-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .player-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #f5c518;
+    }
+    
+    .player-btn ion-icon {
+      font-size: 16px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .movie-detail-layout {
+        flex-direction: column;
+        gap: 30px;
+      }
+      
+      .movie-detail-banner {
+        flex: none;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+      
+      .movie-detail-content {
+        padding-left: 0;
+      }
+      
+      .server-tabs {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .server-tab {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+      
+      .video-player-controls {
+        padding: 12px 15px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      
+      .player-actions {
+        align-self: flex-end;
+      }
+    }
+  </style>
+
+</head>
+
+<body id="#top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="./index.html" class="logo">
+        <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+      </a>
+
+      <div class="header-actions">
+
+        <button class="search-btn">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+
+        <div class="lang-wrapper">
+          <label for="language">
+            <ion-icon name="globe-outline"></ion-icon>
+          </label>
+
+          <select name="language" id="language">
+            <option value="en">EN</option>
+            <option value="au">AU</option>
+            <option value="ar">AR</option>
+            <option value="tu">TU</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary">Sign in</button>
+
+      </div>
+
+      <button class="menu-open-btn" data-menu-open-btn>
+        <ion-icon name="reorder-two"></ion-icon>
+      </button>
+
+      <nav class="navbar" data-navbar>
+
+        <div class="navbar-top">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <button class="menu-close-btn" data-menu-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+        <ul class="navbar-list">
+
+          <li>
+            <a href="./index.html" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="./movies.html" class="navbar-link">Movies</a>
+          </li>
+
+          <li>
+            <a href="./tv-series.html" class="navbar-link">TV Shows</a>
+          </li>
+
+          <li>
+            <a href="./genres.html" class="navbar-link">Genres</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Pricing</a>
+          </li>
+
+        </ul>
+
+        <ul class="navbar-social-list">
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-pinterest"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    <article>
+
+      <!-- 
+        - #MOVIE DETAIL
+      -->
+
+      <section class="movie-detail">
+        <div class="container">
+
+          <div class="movie-detail-layout">
+            <figure class="movie-detail-banner">
+
+              <img src="./assets/images/movie-4.png" alt="Free guy movie poster">
+
+              <button class="play-btn" id="main-play-btn">
+                <ion-icon name="play-circle-outline"></ion-icon>
+              </button>
+
+            </figure>
+
+            <div class="movie-detail-content">
+
+            <p class="detail-subtitle">New Episodes</p>
+
+            <h1 class="h1 detail-title">
+              Free <strong>Guy</strong>
+            </h1>
+
+            <div class="meta-wrapper">
+
+              <div class="badge-wrapper">
+                <div class="badge badge-fill">PG 13</div>
+
+                <div class="badge badge-outline">HD</div>
+              </div>
+
+              <div class="ganre-wrapper">
+                <a href="#">Comedy,</a>
+
+                <a href="#">Action,</a>
+
+                <a href="#">Adventure,</a>
+
+                <a href="#">Science Fiction</a>
+              </div>
+
+              <div class="date-time">
+
+                <div>
+                  <ion-icon name="calendar-outline"></ion-icon>
+
+                  <time datetime="2021">2021</time>
+                </div>
+
+                <div>
+                  <ion-icon name="time-outline"></ion-icon>
+
+                  <time datetime="PT115M">115 min</time>
+            </div>
+
+            </div>
+
+            <p class="storyline">
+              A bank teller called Guy realizes he is a background character in an open world video game called Free
+              City that will
+              soon go offline.
+            </p>
+
+            <div class="details-actions">
+
+              <button class="share">
+                <ion-icon name="share-social"></ion-icon>
+
+                <span>Share</span>
+              </button>
+
+              <div class="title-wrapper">
+                <p class="title">Autoembed.cc</p>
+
+                <p class="text">Streaming Server</p>
+              </div>
+
+              <button class="btn btn-primary" id="watch-now-btn">
+                <ion-icon name="play"></ion-icon>
+
+                <span>Watch Now</span>
+              </button>
+
+            </div>
+
+            <!-- Movie Servers Section -->
+            <div class="movie-servers">
+              <h3 class="servers-title">Available Servers</h3>
+              
+              <!-- Server Tabs -->
+              <div class="server-tabs" id="server-tabs">
+                <!-- Server tabs will be loaded dynamically -->
+              </div>
+              
+              <!-- Video Player Container -->
+              <div class="video-player-container" id="video-player-container">
+                <div class="video-player-wrapper">
+                  <iframe id="video-player-iframe" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="video-player-controls">
+                  <div class="player-info">
+                    <span id="current-server-name">Select a server to start watching</span>
+                  </div>
+                  <div class="player-actions">
+                    <button class="player-btn" id="fullscreen-btn" title="Fullscreen">
+                      <ion-icon name="expand-outline"></ion-icon>
+                    </button>
+                    <button class="player-btn" id="refresh-btn" title="Refresh">
+                      <ion-icon name="refresh-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+
+
+      <!-- 
+        - #TV SERIES
+      -->
+
+      <section class="tv-series">
+        <div class="container">
+
+          <p class="section-subtitle">Best TV Series</p>
+
+          <h2 class="h2 section-title">World Best TV Series</h2>
+
+          <ul class="movies-list">
+            <!-- Related content will be loaded dynamically by JavaScript -->
+          </ul>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand-wrapper">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <ul class="footer-list">
+
+            <li>
+              <a href="./index.html" class="footer-link">Home</a>
+            </li>
+
+            <li>
+              <a href="./movies.html" class="footer-link">Movies</a>
+            </li>
+
+            <li>
+              <a href="./tv-series.html" class="footer-link">TV Shows</a>
+            </li>
+
+            <li>
+              <a href="./genres.html" class="footer-link">Genres</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">Pricing</a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="quicklink-wrapper">
+
+          <ul class="quicklink-list">
+
+            <li>
+              <a href="#" class="quicklink-link">Faq</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Help center</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Terms of use</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Privacy</a>
+            </li>
+
+          </ul>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-pinterest"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; 2022 <a href="#">codewithsadee</a>. All Rights Reserved
+        </p>
+
+        <img src="./assets/images/footer-bottom-img.png" alt="Online banking companies logo" class="footer-bottom-img">
+
+      </div>
+    </div>
+
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+  <!-- 
+    - #FULLSCREEN VIDEO CONTAINER
+  -->
+
+  <div class="fullscreen-video-container" id="fullscreen-video-container">
+    <div class="fullscreen-title" id="fullscreen-title">Movie Title</div>
+    <button class="fullscreen-close-btn" id="fullscreen-close-btn">&times;</button>
+    <div class="fullscreen-video-wrapper">
+      <iframe class="fullscreen-video-iframe" id="fullscreen-video-iframe" allowfullscreen></iframe>
+      <div class="fullscreen-video-controls">
+        <div class="fullscreen-control-row">
+          <button class="fullscreen-control-btn" id="fullscreen-play-btn" title="Play/Pause">
+            <ion-icon name="play"></ion-icon>
+          </button>
+          <div class="fullscreen-progress-container">
+            <div class="fullscreen-progress-bar" id="fullscreen-progress-bar">
+              <div class="fullscreen-progress-fill" id="fullscreen-progress-fill"></div>
+            </div>
+          </div>
+          <div class="fullscreen-time-display">
+            <span id="fullscreen-current-time">0:00</span> / <span id="fullscreen-total-time">2:00:00</span>
+          </div>
+          <button class="fullscreen-control-btn" id="fullscreen-volume-btn" title="Volume">
+            <ion-icon name="volume-high"></ion-icon>
+          </button>
+          <button class="fullscreen-control-btn" id="fullscreen-exit-btn" title="Exit Fullscreen">
+            <ion-icon name="contract"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- 
+    - custom js link - Load AFTER ads
+  -->
+  <script src="./assets/js/movie-api.js"></script>
+  <script src="./assets/js/script.js"></script>
+
+  <!-- Movie Details Page Script -->
+  <script>
+
+    // Load movie details page
+    async function loadMovieDetailsPage() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const movieId = urlParams.get('id');
+      const type = urlParams.get('type');
+      
+      if (!movieId) {
+        console.log('No movie ID provided, showing default movie');
+        handleDefaultMovieDetails();
+        return;
+      }
+      
+      try {
+        let movie;
+        if (type === 'tv') {
+          movie = await window.movieAPI.getTVSeriesDetails(movieId);
+        } else {
+          movie = await window.movieAPI.getMovieDetails(movieId);
+        }
+        
+        if (movie) {
+          updateMovieDetailsPage(movie, type);
+        } else {
+          console.error('Movie/TV show not found, showing default movie');
+          handleDefaultMovieDetails();
+        }
+      } catch (error) {
+        console.error('Error loading movie details:', error);
+        handleDefaultMovieDetails();
+      }
+    }
+
+    // Update movie details page with movie data
+    function updateMovieDetailsPage(movie, type = 'movie') {
+      // Update page title
+      document.title = `${movie.title} - FilmHaven`;
+      
+      // Update movie poster
+      const moviePoster = document.querySelector('.movie-detail-banner img');
+      if (moviePoster) {
+        moviePoster.src = movie.poster;
+        moviePoster.alt = `${movie.title} movie poster`;
+      }
+      
+      // Update movie title
+      const movieTitle = document.querySelector('.detail-title');
+      if (movieTitle) {
+        movieTitle.innerHTML = `<strong>${movie.title}</strong>`;
+      }
+      
+      // Update movie year
+      const movieYear = document.querySelector('.date-time time[datetime]');
+      if (movieYear) {
+        movieYear.textContent = movie.year;
+        movieYear.setAttribute('datetime', movie.year);
+      }
+      
+      // Update movie duration
+      const movieDuration = document.querySelector('.date-time time[datetime="PT115M"]');
+      if (movieDuration) {
+        movieDuration.textContent = movie.duration;
+        movieDuration.setAttribute('datetime', `PT${movie.duration.replace(' min', 'M')}`);
+      }
+      
+      // Update movie genres
+      const movieGenres = document.querySelector('.ganre-wrapper');
+      if (movieGenres) {
+        const genres = movie.genre.split(', ');
+        movieGenres.innerHTML = genres.map(genre => `<a href="#">${genre}</a>`).join(', ');
+      }
+      
+      // Update movie rating
+      const movieRating = document.querySelector('.badge-wrapper .badge:first-child');
+      if (movieRating) {
+        movieRating.textContent = `${movie.rating}★`;
+      }
+      
+      // Update movie quality
+      const movieQuality = document.querySelector('.badge-wrapper .badge:last-child');
+      if (movieQuality) {
+        movieQuality.textContent = movie.quality;
+      }
+      
+      // Update movie description
+      const movieDescription = document.querySelector('.storyline');
+      if (movieDescription) {
+        movieDescription.textContent = movie.overview;
+      }
+      
+      // Update movie servers
+      loadMovieServers(movie, type);
+      
+      
+      // Update play button
+      const playBtn = document.getElementById('main-play-btn');
+      if (playBtn) {
+        playBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openMoviePlayer(movie.embedUrl, movie.title);
+        });
+      }
+      
+      // Update watch now button
+      const watchNowBtn = document.getElementById('watch-now-btn');
+      if (watchNowBtn) {
+        watchNowBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openMoviePlayer(movie.embedUrl, movie.title);
+        });
+      }
+    }
+
+    // Load movie servers
+    function loadMovieServers(movie, type = 'movie') {
+      const serverTabs = document.getElementById('server-tabs');
+      if (!serverTabs) return;
+      
+      serverTabs.innerHTML = '';
+      
+      const servers = [
+        {
+          name: 'VidSrc',
+          url: type === 'tv' ? `https://vidsrc.me/embed/tv/${movie.id}` : `https://vidsrc.me/embed/movie/${movie.id}`,
+          type: 'Primary',
+          quality: 'HD',
+          status: 'online',
+          icon: 'play-circle',
+          adWarning: false
+        },
+        {
+          name: 'SuperEmbed',
+          url: `https://superembed.stream/e/${movie.id}`,
+          type: 'Alternative',
+          quality: 'HD',
+          status: 'online',
+          icon: 'play-circle',
+          adWarning: false
+        },
+        {
+          name: 'VidCloud',
+          url: type === 'tv' ? `https://vidcloud.icu/embed/tv/${movie.id}` : `https://vidcloud.icu/embed/movie/${movie.id}`,
+          type: 'Alternative',
+          quality: 'HD',
+          status: 'online',
+          icon: 'play-circle',
+          adWarning: false
+        }
+      ];
+      
+      servers.forEach((server, index) => {
+        const serverTab = document.createElement('div');
+        serverTab.className = 'server-tab';
+        if (index === 0) serverTab.classList.add('active');
+        
+        serverTab.innerHTML = `
+          <ion-icon name="${server.icon}" class="server-icon"></ion-icon>
+          <span>${server.name}</span>
+          <span class="server-quality">${server.quality}</span>
+        `;
+        
+        serverTab.addEventListener('click', () => {
+          // Remove active class from all tabs
+          document.querySelectorAll('.server-tab').forEach(tab => tab.classList.remove('active'));
+          // Add active class to clicked tab
+          serverTab.classList.add('active');
+          // Load the server
+          loadServer(server.url, server.name, server.adWarning);
+        });
+        
+        serverTabs.appendChild(serverTab);
+      });
+      
+      // Load the first server by default
+      if (servers.length > 0) {
+        loadServer(servers[0].url, servers[0].name, servers[0].adWarning);
+      }
+    }
+    
+    // Load server in the embedded player
+    function loadServer(url, name, adWarning) {
+      const iframe = document.getElementById('video-player-iframe');
+      const serverName = document.getElementById('current-server-name');
+      
+      if (iframe && serverName) {
+        iframe.src = url;
+        serverName.textContent = `Now playing: ${name}`;
+        
+        if (adWarning) {
+          serverName.textContent += ' (May contain ads)';
+        }
+      }
+    }
+
+    // Open server
+    function openServer(url, name, adWarning) {
+      if (name === 'Direct Link') {
+        window.open(url, '_blank');
+      } else {
+        openMoviePlayer(url, name, adWarning);
+      }
+    }
+
+    // Handle default movie details
+    function handleDefaultMovieDetails() {
+      const defaultMovie = {
+        id: '550988',
+        title: 'Free Guy',
+        year: 2021,
+        genre: 'Action, Adventure, Comedy',
+        rating: '7.7',
+        duration: '115 min',
+        quality: 'HD',
+        poster: './assets/images/movie-4.png',
+        overview: 'A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.',
+        embedUrl: 'https://player.autoembed.cc/embed/movie/550988'
+      };
+      updateMovieDetailsPage(defaultMovie);
+    }
+    
+    // Initialize player controls
+    function initializePlayerControls() {
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const iframe = document.getElementById('video-player-iframe');
+      
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+          } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+          } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+          }
+        });
+      }
+      
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+          const currentSrc = iframe.src;
+          iframe.src = '';
+          setTimeout(() => {
+            iframe.src = currentSrc;
+          }, 100);
+        });
+      }
+    }
+    
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Movie details page loaded');
+      loadMovieDetailsPage();
+      initializePlayerControls();
+    });
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+<svg width="180" height="50" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="50" rx="8" fill="url(#paint0_linear)" fill-opacity="0.1"/>
+  <text fill="#fbbf24" xml:space="preserve" style="white-space: normal" font-family="Poppins" font-size="24" font-weight="700" letter-spacing="0em">
+    <tspan x="20" y="32">FilmHaven</tspan>
+  </text>
+  <path d="M10 25L15 20L20 25L15 30Z" fill="#fbbf24" opacity="0.5"/>
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="180" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+</svg>

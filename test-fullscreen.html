@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Fullscreen - FilmHaven</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="./index.html" class="logo">
+        <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+      </a>
+
+      <div class="header-actions">
+
+        <button class="search-btn">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+
+        <div class="lang-wrapper">
+          <label for="language">
+            <ion-icon name="globe-outline"></ion-icon>
+          </label>
+
+          <select name="language" id="language">
+            <option value="en">EN</option>
+            <option value="au">AU</option>
+            <option value="ar">AR</option>
+            <option value="tu">TU</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary">Sign in</button>
+
+      </div>
+
+      <button class="menu-open-btn" data-menu-open-btn>
+        <ion-icon name="reorder-two"></ion-icon>
+      </button>
+
+      <nav class="navbar" data-navbar>
+
+        <div class="navbar-top">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <button class="menu-close-btn" data-menu-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+        <ul class="navbar-list">
+
+          <li>
+            <a href="./index.html" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Movie</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Tv Show</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Web Series</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Pricing</a>
+          </li>
+
+        </ul>
+
+        <ul class="navbar-social-list">
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-pinterest"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-social-link">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- 
+        - #MOVIE DETAIL
+      -->
+
+      <section class="movie-detail">
+        <div class="container">
+
+          <figure class="movie-detail-banner">
+
+            <img src="./assets/images/movie-4.png" alt="Free guy movie poster">
+
+            <button class="play-btn" id="main-play-btn">
+              <ion-icon name="play-circle-outline"></ion-icon>
+            </button>
+
+            <button class="fullscreen-btn" id="main-fullscreen-btn" title="Fullscreen">
+              <ion-icon name="expand"></ion-icon>
+            </button>
+
+          </figure>
+
+          <div class="movie-detail-content">
+
+            <p class="detail-subtitle">Test Fullscreen</p>
+
+            <h1 class="h1 detail-title">
+              Free <strong>Guy</strong>
+            </h1>
+
+            <div class="meta-wrapper">
+
+              <div class="badge-wrapper">
+                <div class="badge badge-fill">PG 13</div>
+
+                <div class="badge badge-outline">HD</div>
+              </div>
+
+              <div class="ganre-wrapper">
+                <a href="#">Comedy,</a>
+
+                <a href="#">Action,</a>
+
+                <a href="#">Adventure,</a>
+
+                <a href="#">Science Fiction</a>
+              </div>
+
+              <div class="date-time">
+
+                <div>
+                  <ion-icon name="calendar-outline"></ion-icon>
+
+                  <time datetime="2021">2021</time>
+                </div>
+
+                <div>
+                  <ion-icon name="time-outline"></ion-icon>
+
+                  <time datetime="PT115M">115 min</time>
+                </div>
+
+              </div>
+
+            </div>
+
+            <p class="storyline">
+              A bank teller called Guy realizes he is a background character in an open world video game called Free
+              City that will soon go offline.
+            </p>
+
+            <div class="details-actions">
+
+              <button class="share">
+                <ion-icon name="share-social"></ion-icon>
+
+                <span>Share</span>
+              </button>
+
+              <div class="title-wrapper">
+                <p class="title">Autoembed.cc</p>
+
+                <p class="text">Streaming Server</p>
+              </div>
+
+              <button class="btn btn-primary" id="watch-now-btn">
+                <ion-icon name="play"></ion-icon>
+
+                <span>Watch Now</span>
+              </button>
+
+            </div>
+
+            <!-- Movie Servers Section -->
+            <div class="movie-servers">
+              <h3 class="servers-title">Available Servers</h3>
+              <div class="servers-list" id="servers-list">
+                <!-- Servers will be loaded dynamically -->
+              </div>
+            </div>
+
+            <a href="./assets/images/movie-4.png" download class="download-btn">
+              <span>Download</span>
+
+              <ion-icon name="download-outline"></ion-icon>
+            </a>
+
+          </div>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand-wrapper">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+          </a>
+
+          <ul class="footer-list">
+
+            <li>
+              <a href="./index.html" class="footer-link">Home</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">Movie</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">TV Show</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">Web Series</a>
+            </li>
+
+            <li>
+              <a href="#" class="footer-link">Pricing</a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="quicklink-wrapper">
+
+          <ul class="quicklink-list">
+
+            <li>
+              <a href="#" class="quicklink-link">Faq</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Help center</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Terms of use</a>
+            </li>
+
+            <li>
+              <a href="#" class="quicklink-link">Privacy</a>
+            </li>
+
+          </ul>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-pinterest"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; 2022 <a href="#">codewithsadee</a>. All Rights Reserved
+        </p>
+
+        <img src="./assets/images/footer-bottom-img.png" alt="Online banking companies logo" class="footer-bottom-img">
+
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+  <!-- 
+    - #FULLSCREEN VIDEO CONTAINER
+  -->
+
+  <div class="fullscreen-video-container" id="fullscreen-video-container">
+    <div class="fullscreen-title" id="fullscreen-title">Movie Title</div>
+    <button class="fullscreen-close-btn" id="fullscreen-close-btn">&times;</button>
+    <div class="fullscreen-video-wrapper">
+      <iframe class="fullscreen-video-iframe" id="fullscreen-video-iframe" allowfullscreen></iframe>
+      <div class="fullscreen-video-controls">
+        <div class="fullscreen-control-row">
+          <button class="fullscreen-control-btn" id="fullscreen-play-btn" title="Play/Pause">
+            <ion-icon name="play"></ion-icon>
+          </button>
+          <div class="fullscreen-progress-container">
+            <div class="fullscreen-progress-bar" id="fullscreen-progress-bar">
+              <div class="fullscreen-progress-fill" id="fullscreen-progress-fill"></div>
+            </div>
+          </div>
+          <div class="fullscreen-time-display">
+            <span id="fullscreen-current-time">0:00</span> / <span id="fullscreen-total-time">2:00:00</span>
+          </div>
+          <button class="fullscreen-control-btn" id="fullscreen-volume-btn" title="Volume">
+            <ion-icon name="volume-high"></ion-icon>
+          </button>
+          <button class="fullscreen-control-btn" id="fullscreen-exit-btn" title="Exit Fullscreen">
+            <ion-icon name="contract"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/movie-api.js"></script>
+  <script src="./assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- Test script -->
+  <script>
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded, initializing movie details...');
+      
+      // Load movie details
+      const testMovie = {
+        id: '550988',
+        title: 'Free Guy',
+        year: 2021,
+        genre: 'Action, Adventure, Comedy',
+        rating: 7.7,
+        duration: '115 min',
+        quality: '4K',
+        poster: './assets/images/movie-4.png',
+        embedUrl: 'https://player.autoembed.cc/embed/movie/550988',
+        description: 'A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.'
+      };
+      
+      updateMovieDetailsPage(testMovie);
+      
+      // Test fullscreen button
+      const fullscreenBtn = document.getElementById('main-fullscreen-btn');
+      if (fullscreenBtn) {
+        console.log('Fullscreen button found!');
+        fullscreenBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log('Fullscreen button clicked!');
+          openFullscreenVideo(testMovie.embedUrl, testMovie.title);
+        });
+      } else {
+        console.error('Fullscreen button not found!');
+      }
+    });
+  </script>
+
+</body>
+
+</html>
