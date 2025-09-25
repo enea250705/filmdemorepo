@@ -4,25 +4,29 @@
 
 /**
  * navbar variables
+ * Updated: Fixed null reference errors for movie-details page
  */
 
+// Safely get navigation elements
 const navOpenBtn = document.querySelector("[data-menu-open-btn]");
 const navCloseBtn = document.querySelector("[data-menu-close-btn]");
 const navbar = document.querySelector("[data-navbar]");
 const overlay = document.querySelector("[data-overlay]");
 
-const navElemArr = [navOpenBtn, navCloseBtn, overlay];
+// Only proceed if we're not on movie-details page
+if (!window.location.pathname.includes('movie-details.html')) {
+  const navElemArr = [navOpenBtn, navCloseBtn, overlay];
 
-for (let i = 0; i < navElemArr.length; i++) {
-
-  navElemArr[i].addEventListener("click", function () {
-
-    navbar.classList.toggle("active");
-    overlay.classList.toggle("active");
-    document.body.classList.toggle("active");
-
-  });
-
+  // Only add event listeners if elements exist
+  for (let i = 0; i < navElemArr.length; i++) {
+    if (navElemArr[i]) {
+      navElemArr[i].addEventListener("click", function () {
+        if (navbar) navbar.classList.toggle("active");
+        if (overlay) overlay.classList.toggle("active");
+        document.body.classList.toggle("active");
+      });
+    }
+  }
 }
 
 
@@ -33,11 +37,11 @@ for (let i = 0; i < navElemArr.length; i++) {
 
 const header = document.querySelector("[data-header]");
 
-window.addEventListener("scroll", function () {
-
-  window.scrollY >= 10 ? header.classList.add("active") : header.classList.remove("active");
-
-});
+if (header) {
+  window.addEventListener("scroll", function () {
+    window.scrollY >= 10 ? header.classList.add("active") : header.classList.remove("active");
+  });
+}
 
 
 
@@ -47,11 +51,11 @@ window.addEventListener("scroll", function () {
 
 const goTopBtn = document.querySelector("[data-go-top]");
 
-window.addEventListener("scroll", function () {
-
-  window.scrollY >= 500 ? goTopBtn.classList.add("active") : goTopBtn.classList.remove("active");
-
-});
+if (goTopBtn) {
+  window.addEventListener("scroll", function () {
+    window.scrollY >= 500 ? goTopBtn.classList.add("active") : goTopBtn.classList.remove("active");
+  });
+}
 
 
 
@@ -65,15 +69,19 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Load movies using TMDb API
-  console.log('Loading movies from API...');
-  loadMoviesFromAPI('.upcoming .movies-list', 'popular', 8);
-  loadMoviesFromAPI('.top-rated .movies-list', 'top-rated', 8);
-  loadMoviesFromAPI('.tv-series .movies-list', 'tv-series', 8);
+  // Only load movies if we're not on movie-details page
+  if (!window.location.pathname.includes('movie-details.html')) {
+    // Load movies using TMDb API
+    console.log('Loading movies from API...');
+    loadMoviesFromAPI('.upcoming .movies-list', 'popular', 8);
+    loadMoviesFromAPI('.top-rated .movies-list', 'top-rated', 8);
+    loadMoviesFromAPI('.tv-series .movies-list', 'tv-series', 8);
+  }
   
   // Handle movie details page
   if (window.location.pathname.includes('movie-details.html')) {
-    loadMovieDetailsPage();
+    // Don't call loadMovieDetailsPage here - let the page handle it
+    console.log('Movie details page detected - letting page handle initialization');
   }
 });
 
