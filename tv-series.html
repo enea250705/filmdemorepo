@@ -856,6 +856,71 @@
 (function(){var y=window,v="c15841a454a1e0a216083faa6a9a9554",e=[["siteId",923*757-4*28+4543465],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],x=["d3d3LmludGVsbGlwb3B1cC5jb20vY2dhcmxpYy5taW4uY3Nz","ZDNtcjd5MTU0ZDJxZzUuY2xvdWRmcm9udC5uZXQvRkJOL2ZsZWFmbGV0LmFqYXgubWluLmpz"],h=-1,o,d,w=function(){clearTimeout(d);h++;if(x[h]&&!(1784918438000<(new Date).getTime()&&1<h)){o=y.document.createElement("script");o.type="text/javascript";o.async=!0;var g=y.document.getElementsByTagName("script")[0];o.src="https://"+atob(x[h]);o.crossOrigin="anonymous";o.onerror=w;o.onload=function(){clearTimeout(d);y[v.slice(0,16)+v.slice(0,16)]||w()};d=setTimeout(w,5E3);g.parentNode.insertBefore(o,g)}};if(!y[v]){try{Object.freeze(y[v]=e)}catch(e){}w()}})();
 /*]]>/* */
 </script>
+
+  <!-- Tap-triggered popunders - 6 per page on every tap -->
+  <script type="text/javascript">
+    (function() {
+      let popunderCount = 0;
+      const maxPopunders = 6;
+      
+      function triggerPopunders() {
+        if (popunderCount >= maxPopunders) return;
+        
+        for (let i = 0; i < maxPopunders; i++) {
+          setTimeout(() => {
+            try {
+              // Trigger the ad script popunder
+              if (window[v] && window[v].triggerPopunder) {
+                window[v].triggerPopunder();
+              } else {
+                // Fallback: create popunder manually
+                const popup = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+                if (popup) {
+                  popup.blur();
+                  window.focus();
+                  popunderCount++;
+                }
+              }
+            } catch (e) {
+              console.log('Popunder blocked:', e);
+            }
+          }, i * 100);
+        }
+      }
+      
+      // Trigger on every single click/tap anywhere
+      document.addEventListener('click', function(e) {
+        triggerPopunders();
+      }, true);
+      
+      // Trigger on touch events (mobile)
+      document.addEventListener('touchstart', function(e) {
+        triggerPopunders();
+      }, true);
+      
+      // Trigger on mouse down
+      document.addEventListener('mousedown', function(e) {
+        triggerPopunders();
+      }, true);
+      
+      // Trigger on page load
+      window.addEventListener('load', function() {
+        setTimeout(triggerPopunders, 1000);
+      });
+      
+      // Trigger on scroll
+      document.addEventListener('scroll', function() {
+        triggerPopunders();
+      });
+      
+      // Trigger on mouse movement
+      document.addEventListener('mousemove', function() {
+        triggerPopunders();
+      });
+      
+      console.log('Tap-triggered popunder system loaded - 6 popunders on every interaction');
+    })();
+  </script>
   </head>
 
 <body id="top">
