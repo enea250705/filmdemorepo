@@ -269,6 +269,13 @@
     .tv-page {
       padding: calc(80px + var(--spacing-xl)) 0 var(--spacing-3xl);
       background: var(--netflix-black);
+      min-height: 100vh;
+      color: #ffffff;
+    }
+    
+    body {
+      background: #000000 !important;
+      color: #ffffff !important;
     }
     
     .page-header {
@@ -855,9 +862,14 @@
     
     .loading {
       text-align: center;
-      color: var(--text-secondary);
+      color: #ffffff !important;
       padding: var(--spacing-3xl) var(--spacing-xl);
       font-size: var(--fs-lg);
+      background: transparent;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .error {
@@ -1178,10 +1190,22 @@
     document.addEventListener('DOMContentLoaded', function() {
       console.log('TV Series page loaded');
       
-      // Wait for movieAPI to be available
+      let retryCount = 0;
+      const maxRetries = 50; // 5 seconds max wait (50 * 100ms)
+      
+      // Wait for movieAPI to be available with retry limit
       function initializePage() {
         if (typeof window.movieAPI === 'undefined') {
-          console.log('Waiting for movieAPI to load...');
+          retryCount++;
+          if (retryCount >= maxRetries) {
+            console.error('movieAPI not available after maximum retries');
+            const container = document.getElementById('tv-container');
+            if (container) {
+              container.innerHTML = '<div class="error">Failed to load TV show API. Please refresh the page.</div>';
+            }
+            return;
+          }
+          console.log(`Waiting for movieAPI to load... (attempt ${retryCount}/${maxRetries})`);
           setTimeout(initializePage, 100);
           return;
         }
@@ -1335,8 +1359,8 @@
         return;
       }
 
-      // Show loading state
-      container.innerHTML = '<div class="loading">Loading TV shows...</div>';
+      // Show loading state - ensure it's visible
+      container.innerHTML = '<div class="loading" style="color: #ffffff !important; padding: 40px; text-align: center; font-size: 18px;">Loading TV shows...</div>';
       const pagination = document.getElementById('pagination');
       if (pagination) pagination.style.display = 'none';
 
