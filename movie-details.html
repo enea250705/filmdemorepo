@@ -172,12 +172,13 @@
     /* Movie Detail Layout */
     .movie-detail-layout {
       display: flex;
+      flex-direction: column;
       gap: 40px;
-      align-items: flex-start;
     }
     
     .movie-detail-banner {
-      flex: 0 0 300px;
+      max-width: 300px;
+      margin: 0 auto;
       position: relative;
     }
     
@@ -189,8 +190,21 @@
     }
     
     .movie-detail-content {
-      flex: 1;
-      padding-left: 20px;
+      width: 100%;
+      max-width: 100%;
+      padding-left: 0;
+    }
+    
+    /* Make container wider for video player */
+    .movie-detail .container {
+      max-width: 1600px;
+      padding: 0 4%;
+    }
+    
+    @media (min-width: 1400px) {
+      .movie-detail .container {
+        padding: 0 60px;
+      }
     }
     
     /* Server Tabs - Netflix Style */
@@ -248,14 +262,17 @@
       letter-spacing: 0.5px;
     }
     
-    /* Video Player Container - Netflix Style */
+    /* Video Player Container - Netflix Style - LARGE */
     .video-player-container {
       background: #000;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
-      margin-top: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 1);
+      margin-top: 40px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 100%;
+      max-width: 100%;
     }
     
     .video-player-wrapper {
@@ -264,6 +281,25 @@
       height: 0;
       padding-bottom: 56.25%; /* 16:9 aspect ratio - Netflix standard */
       background: #000;
+      min-height: 500px;
+    }
+    
+    @media (min-width: 768px) {
+      .video-player-wrapper {
+        min-height: 600px;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .video-player-wrapper {
+        min-height: 700px;
+      }
+    }
+    
+    @media (min-width: 1400px) {
+      .video-player-wrapper {
+        min-height: 800px;
+      }
     }
     
     .video-player-wrapper::before {
@@ -354,13 +390,17 @@
       }
       
       .movie-detail-banner {
-        flex: none;
         max-width: 250px;
         margin: 0 auto;
       }
       
       .movie-detail-content {
         padding-left: 0;
+        width: 100%;
+      }
+      
+      .movie-detail .container {
+        padding: 0 4%;
       }
       
       .server-tabs {
@@ -385,15 +425,17 @@
         align-self: flex-end;
       }
       
-      /* Video player on mobile - maintain 16:9 ratio */
+      /* Video player on mobile - LARGE */
       .video-player-wrapper {
         padding-bottom: 56.25%; /* Keep 16:9 aspect ratio */
+        min-height: 400px;
       }
       
       .video-player-container {
-        margin-top: 20px;
-        border-radius: 8px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-radius: 12px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 1);
         width: 100%;
       }
       
