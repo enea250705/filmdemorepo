@@ -29,18 +29,22 @@
 
 
   <style>
-    /* Modern Navigation Styles */
+    /* Modern Navigation Styles - Netflix Style */
     .header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(26, 26, 26, 0.95);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 15px 0;
       z-index: 1000;
       transition: all 0.3s ease;
+    }
+    
+    .header.active {
+      background: #000;
     }
 
     .header .container {
@@ -110,13 +114,18 @@
 
     .navbar-link:hover {
       color: #ffffff;
-      background: rgba(251, 191, 36, 0.1);
-      border-color: rgba(251, 191, 36, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
       transform: translateY(-2px);
     }
-
+    
     .navbar-link:hover::before {
       opacity: 1;
+    }
+    
+    .navbar-link.active {
+      color: #E50914;
+      font-weight: 700;
     }
 
     .header-actions {
@@ -184,74 +193,86 @@
       padding-left: 20px;
     }
     
-    /* Server Tabs */
+    /* Server Tabs - Netflix Style */
     .server-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      display: flex;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       width: 100%;
-    }
-    
-    /* Hide the 4th grid cell since we only have 3 servers */
-    .server-tab:nth-child(4) {
-      display: none;
+      flex-wrap: wrap;
     }
     
     .server-tab {
-      padding: 12px 20px;
-      background: rgba(255, 255, 255, 0.1);
+      padding: 14px 24px;
+      background: rgba(42, 42, 42, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
+      border-radius: 6px;
       color: #fff;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       text-align: center;
-      min-height: 50px;
+      min-height: 48px;
+      backdrop-filter: blur(10px);
+      flex: 1;
+      min-width: 140px;
     }
     
     .server-tab:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: #f5c518;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
     }
     
     .server-tab.active {
-      background: #f5c518;
-      border-color: #f5c518;
-      color: #000;
+      background: #E50914;
+      border-color: #E50914;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
     }
     
     .server-tab .server-icon {
-      font-size: 16px;
+      font-size: 18px;
     }
     
     .server-tab .server-quality {
-      font-size: 12px;
-      opacity: 0.8;
+      font-size: 11px;
+      opacity: 0.9;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
-    /* Video Player Container */
+    /* Video Player Container - Netflix Style */
     .video-player-container {
       background: #000;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      margin-top: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
+      margin-top: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .video-player-wrapper {
       position: relative;
       width: 100%;
       height: 0;
-      padding-bottom: 35%; /* Much larger aspect ratio for bigger frame */
+      padding-bottom: 56.25%; /* 16:9 aspect ratio - Netflix standard */
       background: #000;
+    }
+    
+    .video-player-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+      z-index: 1;
+      pointer-events: none;
     }
     
     .video-player-wrapper iframe {
@@ -261,26 +282,34 @@
       width: 100%;
       height: 100%;
       border: none;
+      z-index: 0;
     }
     
     .video-player-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
-      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 24px;
+      background: rgba(0, 0, 0, 0.95);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
     
     .player-info {
       color: #fff;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    
+    .player-info span {
+      color: #E50914;
+      font-weight: 700;
     }
     
     .player-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
     
     .player-btn {
@@ -288,21 +317,33 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
       color: #fff;
-      padding: 8px 12px;
+      padding: 10px 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
     }
     
     .player-btn:hover {
       background: rgba(255, 255, 255, 0.2);
-      border-color: #f5c518;
+      border-color: #E50914;
+      transform: translateY(-2px);
+    }
+    
+    .player-btn:active {
+      transform: translateY(0);
     }
     
     .player-btn ion-icon {
-      font-size: 16px;
+      font-size: 18px;
+    }
+    
+    #fullscreen-btn:hover {
+      background: #E50914;
+      border-color: #E50914;
     }
     
     /* Responsive Design */
@@ -323,13 +364,14 @@
       }
       
       .server-tabs {
-        grid-template-columns: 1fr;
-        gap: 8px;
+        flex-direction: column;
+        gap: 10px;
       }
       
       .server-tab {
-        padding: 10px 16px;
+        padding: 12px 18px;
         font-size: 13px;
+        min-width: 100%;
       }
       
       .video-player-controls {
@@ -343,39 +385,44 @@
         align-self: flex-end;
       }
       
-      /* Make video player much bigger on mobile */
+      /* Video player on mobile - maintain 16:9 ratio */
       .video-player-wrapper {
-        padding-bottom: 90%; /* Much larger aspect ratio for mobile */
+        padding-bottom: 56.25%; /* Keep 16:9 aspect ratio */
       }
       
       .video-player-container {
-        margin-top: 15px;
+        margin-top: 20px;
         border-radius: 8px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
-        margin-bottom: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
         width: 100%;
-        max-width: none;
       }
       
-      /* Make video player full width on mobile */
-      .movie-detail-content {
-        padding: 0 5px;
+      /* Video player controls on mobile */
+      .video-player-controls {
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
       }
       
-      .video-player-container {
-        margin-left: -5px;
-        margin-right: -5px;
-        width: calc(100% + 10px);
-      }
-      
-      /* Optimize video player controls for mobile */
-      .player-btn {
-        padding: 8px 12px;
+      .player-info {
         font-size: 14px;
+        width: 100%;
+      }
+      
+      .player-actions {
+        align-self: flex-end;
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .player-btn {
+        padding: 10px 14px;
+        font-size: 13px;
       }
       
       .player-btn ion-icon {
-        font-size: 14px;
+        font-size: 16px;
       }
       
       /* Make server tabs more mobile-friendly */

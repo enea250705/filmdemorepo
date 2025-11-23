@@ -573,13 +573,8 @@
       }
     }
     
-    /* Responsive grid columns */
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-      .movies-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-      }
-      
       .page-title {
         font-size: 2rem;
       }
@@ -587,18 +582,6 @@
       .switch-btn {
         padding: 10px 20px;
         font-size: 0.85rem;
-      }
-    }
-    
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .movies-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    
-    @media (min-width: 1025px) {
-      .movies-grid {
-        grid-template-columns: repeat(4, 1fr);
       }
     }
     
@@ -1310,11 +1293,12 @@
         }
 
         const movies = apiResponse.movies;
-        totalPages = apiResponse.totalPages;
-        totalResults = apiResponse.totalResults;
+        totalPages = apiResponse.totalPages || 1;
+        totalResults = apiResponse.totalResults || movies.length;
 
         console.log('Movies from API:', movies);
         console.log('Total pages:', totalPages, 'Total results:', totalResults);
+        console.log('Number of movies to display:', movies.length);
 
         if (movies.length === 0) {
           container.innerHTML = '<div class="no-results">No movies found matching your criteria.</div>';
@@ -1322,6 +1306,7 @@
           return;
         }
 
+        // Display all movies (no limit on movies page)
         displayMovies(movies);
         updatePagination();
 

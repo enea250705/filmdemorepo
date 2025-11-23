@@ -979,43 +979,48 @@ section {
 .video-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.98);
   z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--spacing-xl);
+  backdrop-filter: blur(10px);
 }
 
 .modal-content {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   background: var(--netflix-black);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modal-close {
   position: absolute;
   top: var(--spacing-md);
   right: var(--spacing-md);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
   color: var(--text-primary);
-  font-size: var(--fs-2xl);
+  font-size: 24px;
   z-index: 1;
   transition: all var(--transition-base);
+  cursor: pointer;
 }
 
 .modal-close:hover {
   background: var(--netflix-red);
+  border-color: var(--netflix-red);
   transform: scale(1.1);
 }
 
@@ -1125,17 +1130,35 @@ section {
   color: var(--text-primary);
 }
 
-/* Grid Layout for Movies Page */
+/* Grid Layout for Movies Page - Netflix Style Horizontal Scrolling */
 .movies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--spacing-xl) 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-wrap: nowrap;
+}
+
+.movies-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.movies-grid > li {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.movies-grid .movie-card {
+  width: 200px;
 }
 
 @media (max-width: 768px) {
-  .movies-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: var(--spacing-md);
+  .movies-grid .movie-card {
+    width: 150px;
   }
 }
