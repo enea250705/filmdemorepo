@@ -1177,8 +1177,22 @@
     // Initialize the page
     document.addEventListener('DOMContentLoaded', function() {
       console.log('TV Series page loaded');
-      initializeModernFilters();
-      loadTVShows();
+      
+      // Wait for movieAPI to be available
+      function initializePage() {
+        if (typeof window.movieAPI === 'undefined') {
+          console.log('Waiting for movieAPI to load...');
+          setTimeout(initializePage, 100);
+          return;
+        }
+        
+        console.log('movieAPI is available, initializing...');
+        initializeModernFilters();
+        loadTVShows();
+      }
+      
+      // Start initialization
+      initializePage();
       
       // Add search event listeners
       const searchInput = document.getElementById('tv-search');
@@ -1314,67 +1328,113 @@
         return;
       }
 
+      // Check if movieAPI is available
+      if (typeof window.movieAPI === 'undefined') {
+        console.error('Movie API not loaded');
+        showError('Movie API not available. Please refresh the page.');
+        return;
+      }
+
       // Show loading state
       container.innerHTML = '<div class="loading">Loading TV shows...</div>';
       const pagination = document.getElementById('pagination');
       if (pagination) pagination.style.display = 'none';
 
       try {
+        console.log('Starting to load TV shows...');
+        console.log('Current state - Category:', currentCategory, 'Page:', currentPage, 'Genre:', currentGenre, 'Search:', currentSearchQuery);
+        
         // Fetch TV shows based on current state
         const apiResponse = await fetchTVShows();
         
+        console.log('API Response received:', apiResponse);
+        
         // Handle API response
-        if (!apiResponse || !apiResponse.movies) {
-          showError('Unable to load TV shows. Please try again later.');
+        if (!apiResponse) {
+          console.error('No API response received');
+          showError('No response from server. Please try again later.');
+          return;
+        }
+
+        if (!apiResponse.movies) {
+          console.error('Invalid API response structure:', apiResponse);
+          showError('Invalid response format. Please try again.');
           return;
         }
 
         const { movies: shows, totalPages: pages, totalResults } = apiResponse;
         totalPages = pages || 1;
 
+        console.log('TV shows loaded:', shows.length, 'shows');
+
         // Handle empty results
         if (!shows || shows.length === 0) {
+          console.log('No TV shows found');
           showNoResults();
           return;
         }
 
         // Display results
+        console.log('Displaying TV shows...');
         displayTVShows(shows);
         updatePagination();
+        console.log('TV shows displayed successfully');
 
       } catch (error) {
         console.error('Error loading TV shows:', error);
-        showError('Failed to load TV shows. Please check your connection and try again.');
+        const errorMessage = error.message || 'Failed to load TV shows. Please check your connection and try again.';
+        showError(errorMessage);
       }
     }
 
-    // Fetch TV shows from API - Clean separation of concerns
+    // Fetch TV shows from API - Clean separation of concerns with timeout
     async function fetchTVShows() {
-      // Priority 1: Search query
-      if (currentSearchQuery) {
-        return await window.movieAPI.searchTVSeries(currentSearchQuery, currentPage);
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout - API took too long to respond')), 15000);
+      });
+
+      try {
+        let apiCall;
+        
+        // Priority 1: Search query
+        if (currentSearchQuery) {
+          console.log('Fetching TV shows via search:', currentSearchQuery);
+          apiCall = window.movieAPI.searchTVSeries(currentSearchQuery, currentPage);
+        }
+        // Priority 2: Filtered results
+        else if (currentGenre || currentYear || currentRating) {
+          console.log('Fetching TV shows via filters');
+          apiCall = window.movieAPI.getFilteredTVSeries({
+            genre: currentGenre,
+            year: currentYear,
+            rating: currentRating,
+            page: currentPage
+          });
+        }
+        // Priority 3: Category-based results
+        else {
+          console.log('Fetching TV shows via category:', currentCategory);
+          const categoryMap = {
+            'popular': () => window.movieAPI.getPopularTVSeries(currentPage),
+            'top-rated': () => window.movieAPI.getTopRatedTVSeries(currentPage),
+            'on-the-air': () => window.movieAPI.getOnTheAirTVSeries(currentPage),
+            'airing-today': () => window.movieAPI.getAiringTodayTVSeries(currentPage)
+          };
+
+          const fetchFunction = categoryMap[currentCategory] || categoryMap['popular'];
+          apiCall = fetchFunction();
+        }
+
+        // Race between API call and timeout
+        const response = await Promise.race([apiCall, timeoutPromise]);
+        console.log('TV shows API response received:', response);
+        return response;
+        
+      } catch (error) {
+        console.error('Error in fetchTVShows:', error);
+        throw error;
       }
-
-      // Priority 2: Filtered results
-      if (currentGenre || currentYear || currentRating) {
-        return await window.movieAPI.getFilteredTVSeries({
-          genre: currentGenre,
-          year: currentYear,
-          rating: currentRating,
-          page: currentPage
-        });
-      }
-
-      // Priority 3: Category-based results
-      const categoryMap = {
-        'popular': () => window.movieAPI.getPopularTVSeries(currentPage),
-        'top-rated': () => window.movieAPI.getTopRatedTVSeries(currentPage),
-        'on-the-air': () => window.movieAPI.getOnTheAirTVSeries(currentPage),
-        'airing-today': () => window.movieAPI.getAiringTodayTVSeries(currentPage)
-      };
-
-      const fetchFunction = categoryMap[currentCategory] || categoryMap['popular'];
-      return await fetchFunction();
     }
 
     // Show error message
