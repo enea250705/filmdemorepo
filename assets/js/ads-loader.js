@@ -25,9 +25,12 @@
       const adScript1 = document.createElement('script');
       adScript1.type = 'text/javascript';
       adScript1.async = true;
-      adScript1.src = '//pl28120168.effectivegatecpm.com/a8/d0/49/a8d0498b8dafa67dfc94c7ff817bbbbc.js';
+      adScript1.src = 'https://pl28120168.effectivegatecpm.com/a8/d0/49/a8d0498b8dafa67dfc94c7ff817bbbbc.js';
       adScript1.onerror = function() {
-        // Silently fail - don't block page
+        console.warn('Ad script 1 failed to load');
+      };
+      adScript1.onload = function() {
+        console.log('Ad script 1 loaded successfully');
       };
       document.body.appendChild(adScript1);
       
@@ -35,9 +38,12 @@
       const adScript2 = document.createElement('script');
       adScript2.type = 'text/javascript';
       adScript2.async = true;
-      adScript2.src = '//pl28120183.effectivegatecpm.com/0f/2c/43/0f2c431bf8d3dae6a00a87b5ff3dc9eb.js';
+      adScript2.src = 'https://pl28120183.effectivegatecpm.com/0f/2c/43/0f2c431bf8d3dae6a00a87b5ff3dc9eb.js';
       adScript2.onerror = function() {
-        // Silently fail - don't block page
+        console.warn('Ad script 2 failed to load');
+      };
+      adScript2.onload = function() {
+        console.log('Ad script 2 loaded successfully');
       };
       document.body.appendChild(adScript2);
       
@@ -58,9 +64,12 @@
       const adScript3 = document.createElement('script');
       adScript3.type = 'text/javascript';
       adScript3.async = true;
-      adScript3.src = '//www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js';
+      adScript3.src = 'https://www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js';
       adScript3.onerror = function() {
-        // Silently fail - don't block page
+        console.warn('Ad script 3 failed to load');
+      };
+      adScript3.onload = function() {
+        console.log('Ad script 3 loaded successfully');
       };
       document.body.appendChild(adScript3);
       
@@ -69,11 +78,16 @@
       adScript4.type = 'text/javascript';
       adScript4.async = true;
       adScript4.setAttribute('data-cfasync', 'false');
-      adScript4.src = '//pl28120178.effectivegatecpm.com/39118a42908635bbe024c3dfce4caa5a/invoke.js';
+      adScript4.src = 'https://pl28120178.effectivegatecpm.com/39118a42908635bbe024c3dfce4caa5a/invoke.js';
       adScript4.onerror = function() {
-        // Silently fail - don't block page
+        console.warn('Ad script 4 failed to load');
+      };
+      adScript4.onload = function() {
+        console.log('Ad script 4 loaded successfully');
       };
       document.body.appendChild(adScript4);
+      
+      console.log('All ad scripts initiated');
       
       // Load monetag popunder script asynchronously
       const monetagScript = document.createElement('script');
@@ -128,15 +142,32 @@
     }
   }
   
-  // Initialize ad loading
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
+  // Initialize ad loading - ensure body exists
+  function initAds() {
+    if (document.body) {
       setTimeout(loadAds, AD_CONFIG.loadDelay);
-    });
-  } else {
-    // Page already loaded, wait a bit for content to render
-    setTimeout(loadAds, AD_CONFIG.loadDelay);
+    } else {
+      // Wait for body to be ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(loadAds, AD_CONFIG.loadDelay);
+        });
+      } else {
+        // Use a small delay to ensure body is ready
+        setTimeout(function() {
+          if (document.body) {
+            setTimeout(loadAds, AD_CONFIG.loadDelay);
+          } else {
+            // Fallback: try again after a short delay
+            setTimeout(initAds, 100);
+          }
+        }, 100);
+      }
+    }
   }
+  
+  // Start initialization
+  initAds();
   
 })();
 
