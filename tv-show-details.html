@@ -478,9 +478,10 @@
         for (let i = 0; i < maxPopunders; i++) {
           setTimeout(() => {
             try {
-              // Trigger the ad script popunder
-              if (window[v] && window[v].triggerPopunder) {
-                window[v].triggerPopunder();
+              // Check if the ad script variable exists (from the monetag script above)
+              const adScriptVar = window['c15841a454a1e0a216083faa6a9a9554'];
+              if (adScriptVar && typeof adScriptVar.triggerPopunder === 'function') {
+                adScriptVar.triggerPopunder();
               } else {
                 // Fallback: create popunder manually
                 const popup = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
@@ -491,7 +492,8 @@
                 }
               }
             } catch (e) {
-              console.log('Popunder blocked:', e);
+              // Silently handle popunder errors to avoid console spam
+              // console.log('Popunder blocked:', e);
             }
           }, i * 100);
         }
@@ -847,7 +849,7 @@
       seasonsGrid.innerHTML = seasons.map(season => `
         <div class="season-card ${season.season_number === currentSeason ? 'active' : ''}" 
              onclick="selectSeason(${season.season_number})">
-          <img src="https://image.tmdb.org/t/p/w300${season.poster_path || '/placeholder.jpg'}" alt="Season ${season.season_number}" class="season-poster" onerror="this.src='./assets/images/placeholder.jpg';">
+          <img src="https://image.tmdb.org/t/p/w300${season.poster_path || ''}" alt="Season ${season.season_number}" class="season-poster" onerror="this.src='./assets/images/series-1.png';">
           <div class="season-number">Season ${season.season_number}</div>
           <div class="episode-count">${season.episode_count || 0} episodes</div>
         </div>
@@ -939,7 +941,7 @@
       console.log('Displaying', episodes.length, 'episodes');
       episodesGrid.innerHTML = episodes.map(episode => `
         <div class="episode-card" onclick="watchEpisode(${episode.episode_number})">
-          <img src="https://image.tmdb.org/t/p/w300${episode.still_path || '/placeholder.jpg'}" alt="${episode.name}" class="episode-still" onerror="this.src='./assets/images/placeholder.jpg';">
+          <img src="https://image.tmdb.org/t/p/w300${episode.still_path || ''}" alt="${episode.name}" class="episode-still" onerror="this.src='./assets/images/series-1.png';">
           <div class="episode-title">${episode.name || `Episode ${episode.episode_number}`}</div>
           <div class="episode-meta">
             <span class="episode-number">Episode ${episode.episode_number}</span>
