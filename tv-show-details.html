@@ -615,7 +615,12 @@
         <!-- Video Player Container (Same as movie-details) -->
         <div class="video-player-container" id="video-player-container" style="display: none;">
           <div class="video-player-wrapper">
-            <iframe id="video-player-iframe" src="" frameborder="0" allowfullscreen></iframe>
+            <iframe id="video-player-iframe" 
+                    src="" 
+                    frameborder="0" 
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    loading="eager"></iframe>
           </div>
           <div class="video-player-controls">
             <div class="player-info">
@@ -936,16 +941,37 @@
         // Set episode info
         episodeNameSpan.innerHTML = `<span>Now playing:</span> ${currentTVShow.title} - S${String(currentSeason).padStart(2, '0')}E${String(episodeNumber).padStart(2, '0')} - ${episodeName}`;
         
-        // Load the video
-        videoIframe.src = embedUrl;
+        // Clear iframe first to ensure clean load
+        videoIframe.src = '';
         
-        // Show the container
+        // Set iframe attributes for better compatibility
+        videoIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        videoIframe.setAttribute('allowfullscreen', 'true');
+        videoIframe.setAttribute('loading', 'eager');
+        
+        // Show the container first
         videoContainer.style.display = 'block';
         
-        // Scroll to video player smoothly
+        // Small delay before loading to ensure container is visible
         setTimeout(() => {
+          // Load the video
+          videoIframe.src = embedUrl;
+          console.log('Iframe src set to:', embedUrl);
+          
+          // Add error handling for iframe
+          videoIframe.onerror = function() {
+            console.error('Iframe failed to load:', embedUrl);
+            episodeNameSpan.innerHTML = `<span style="color: #ff4444;">Error loading video. <a href="${embedUrl}" target="_blank" style="color: #E50914;">Click to open in new tab</a></span>`;
+          };
+          
+          // Add load event to detect when iframe content loads
+          videoIframe.onload = function() {
+            console.log('Iframe loaded successfully');
+          };
+          
+          // Scroll to video player smoothly
           videoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
+        }, 200);
       } else {
         // Fallback: open in new window if elements not found
         console.warn('Video player elements not found, opening in new window');
