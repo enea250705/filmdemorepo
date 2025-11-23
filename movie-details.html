@@ -651,7 +651,12 @@
               <!-- Video Player Container -->
               <div class="video-player-container" id="video-player-container">
                 <div class="video-player-wrapper">
-                  <iframe id="video-player-iframe" src="" frameborder="0" allowfullscreen></iframe>
+                  <iframe id="video-player-iframe" 
+                          src="" 
+                          frameborder="0" 
+                          allowfullscreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          loading="eager"></iframe>
                 </div>
                 <div class="video-player-controls">
                   <div class="player-info">
@@ -896,8 +901,14 @@
       }
     }
 
+    // Store current movie globally
+    let currentMovie = null;
+    
     // Load movie servers
     function loadMovieServers(movie, type = 'movie') {
+      // Store current movie
+      currentMovie = movie;
+      
       const serverTabs = document.getElementById('server-tabs');
       if (!serverTabs) return;
       
@@ -968,12 +979,52 @@
       const serverName = document.getElementById('current-server-name');
       
       if (iframe && serverName) {
-        iframe.src = url;
-        serverName.textContent = `Now playing: ${name}`;
+        // Clear iframe first
+        iframe.src = '';
         
+        // Set iframe attributes
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('loading', 'eager');
+        
+        // Set server info
+        let infoText = `<span>Now playing:</span> ${currentMovie ? currentMovie.title : name}`;
         if (adWarning) {
-          serverName.textContent += ' (May contain ads)';
+          infoText += ' <span style="color: #ffaa00;">(May contain ads)</span>';
         }
+        serverName.innerHTML = infoText;
+        
+        // Show the container
+        const videoContainer = document.getElementById('video-player-container');
+        if (videoContainer) {
+          videoContainer.style.display = 'block';
+        }
+        
+        // Small delay before loading
+        setTimeout(() => {
+          // Load the video
+          iframe.src = url;
+          console.log('Loading server:', name, 'URL:', url);
+          
+          // Add error handling
+          iframe.onerror = function() {
+            console.error('Iframe failed to load:', url);
+            serverName.innerHTML = `<span style="color: #ff4444;">Error loading ${name}. <a href="${url}" target="_blank" style="color: #E50914; text-decoration: underline;">Try opening in new tab</a></span>`;
+          };
+          
+          // Add load event
+          let loadTimeout;
+          iframe.onload = function() {
+            console.log('Iframe loaded successfully:', name);
+            clearTimeout(loadTimeout);
+          };
+          
+          // Add timeout detection
+          loadTimeout = setTimeout(() => {
+            console.warn('Video player may be stuck in loading state');
+            serverName.innerHTML = `<span style="color: #ffaa00;">Video taking longer than expected. <a href="${url}" target="_blank" style="color: #E50914; text-decoration: underline;">Try opening in new tab</a> or try a different server.</span>`;
+          }, 10000);
+        }, 200);
       }
     }
 
