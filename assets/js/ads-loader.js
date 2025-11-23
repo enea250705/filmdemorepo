@@ -21,6 +21,60 @@
    */
   function loadAds() {
     try {
+      // Load first ad script asynchronously
+      const adScript1 = document.createElement('script');
+      adScript1.type = 'text/javascript';
+      adScript1.async = true;
+      adScript1.src = '//pl28120168.effectivegatecpm.com/a8/d0/49/a8d0498b8dafa67dfc94c7ff817bbbbc.js';
+      adScript1.onerror = function() {
+        // Silently fail - don't block page
+      };
+      document.body.appendChild(adScript1);
+      
+      // Load second ad script asynchronously
+      const adScript2 = document.createElement('script');
+      adScript2.type = 'text/javascript';
+      adScript2.async = true;
+      adScript2.src = '//pl28120183.effectivegatecpm.com/0f/2c/43/0f2c431bf8d3dae6a00a87b5ff3dc9eb.js';
+      adScript2.onerror = function() {
+        // Silently fail - don't block page
+      };
+      document.body.appendChild(adScript2);
+      
+      // Load third ad script (highperformanceformat) - configuration first, then loader
+      const adConfig3 = document.createElement('script');
+      adConfig3.type = 'text/javascript';
+      adConfig3.textContent = `
+	atOptions = {
+		'key' : 'efcbf04d5d9aa2ab70930eccd37b2820',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+      `;
+      document.body.appendChild(adConfig3);
+      
+      const adScript3 = document.createElement('script');
+      adScript3.type = 'text/javascript';
+      adScript3.async = true;
+      adScript3.src = '//www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js';
+      adScript3.onerror = function() {
+        // Silently fail - don't block page
+      };
+      document.body.appendChild(adScript3);
+      
+      // Load fourth ad script asynchronously
+      const adScript4 = document.createElement('script');
+      adScript4.type = 'text/javascript';
+      adScript4.async = true;
+      adScript4.setAttribute('data-cfasync', 'false');
+      adScript4.src = '//pl28120178.effectivegatecpm.com/39118a42908635bbe024c3dfce4caa5a/invoke.js';
+      adScript4.onerror = function() {
+        // Silently fail - don't block page
+      };
+      document.body.appendChild(adScript4);
+      
       // Load monetag popunder script asynchronously
       const monetagScript = document.createElement('script');
       monetagScript.type = 'text/javascript';
