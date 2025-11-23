@@ -47,32 +47,6 @@
       };
       document.body.appendChild(adScript2);
       
-      // Load third ad script (highperformanceformat) - configuration first, then loader
-      const adConfig3 = document.createElement('script');
-      adConfig3.type = 'text/javascript';
-      adConfig3.textContent = `
-	atOptions = {
-		'key' : 'efcbf04d5d9aa2ab70930eccd37b2820',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-      `;
-      document.body.appendChild(adConfig3);
-      
-      const adScript3 = document.createElement('script');
-      adScript3.type = 'text/javascript';
-      adScript3.async = true;
-      adScript3.src = 'https://www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js';
-      adScript3.onerror = function() {
-        console.warn('Ad script 3 failed to load');
-      };
-      adScript3.onload = function() {
-        console.log('Ad script 3 loaded successfully');
-      };
-      document.body.appendChild(adScript3);
-      
       // Load fourth ad script asynchronously
       const adScript4 = document.createElement('script');
       adScript4.type = 'text/javascript';
