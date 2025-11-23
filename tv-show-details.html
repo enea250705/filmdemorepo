@@ -690,9 +690,32 @@
     let seasons = [];
     let episodes = [];
 
-    // Initialize the page
+    // Initialize the page with retry mechanism
     document.addEventListener('DOMContentLoaded', function() {
-      loadTVShowDetails();
+      let retryCount = 0;
+      const maxRetries = 50; // 5 seconds max wait (50 * 100ms)
+      
+      function initializePage() {
+        if (typeof window.movieAPI === 'undefined') {
+          retryCount++;
+          if (retryCount >= maxRetries) {
+            console.error('movieAPI not available after maximum retries');
+            const banner = document.getElementById('tv-show-banner');
+            if (banner) {
+              banner.innerHTML = '<div class="error">Failed to load TV show API. Please refresh the page.</div>';
+            }
+            return;
+          }
+          setTimeout(initializePage, 100);
+          return;
+        }
+        
+        console.log('movieAPI is available, loading TV show details...');
+        loadTVShowDetails();
+      }
+      
+      // Start initialization
+      initializePage();
     });
 
     // Load TV show details
@@ -717,8 +740,15 @@
           throw new Error('Movie API not loaded');
         }
         
-        // Get TV show details
-        const tvShow = await window.movieAPI.getTVSeriesDetails(seriesId);
+        // Add timeout protection for initial load
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Request timeout - API took too long to respond')), 20000);
+        });
+        
+        // Get TV show details with timeout
+        const apiCall = window.movieAPI.getTVSeriesDetails(seriesId);
+        const tvShow = await Promise.race([apiCall, timeoutPromise]);
+        
         console.log('TV Show API response:', tvShow);
         
         if (!tvShow) {
@@ -757,7 +787,21 @@
 
       } catch (error) {
         console.error('Error loading TV show details:', error);
-        document.getElementById('tv-show-banner').innerHTML = `<div class="error">Error loading TV show details: ${error.message}</div>`;
+        const banner = document.getElementById('tv-show-banner');
+        const seasonsGrid = document.getElementById('seasons-grid');
+        const episodesGrid = document.getElementById('episodes-grid');
+        
+        if (banner) {
+          banner.innerHTML = `<div class="error" style="color: #ff4444; padding: 40px; text-align: center;">Error loading TV show details: ${error.message}<br><br><a href="./tv-series.html" style="color: #E50914; text-decoration: underline;">Go back to TV Shows</a></div>`;
+        }
+        
+        if (seasonsGrid) {
+          seasonsGrid.innerHTML = '<div class="error">Unable to load seasons</div>';
+        }
+        
+        if (episodesGrid) {
+          episodesGrid.innerHTML = '<div class="error">Unable to load episodes</div>';
+        }
       }
     }
 
@@ -965,9 +1009,17 @@
           };
           
           // Add load event to detect when iframe content loads
+          let loadTimeout;
           videoIframe.onload = function() {
             console.log('Iframe loaded successfully');
+            clearTimeout(loadTimeout);
           };
+          
+          // Add timeout to detect if video doesn't start playing
+          loadTimeout = setTimeout(() => {
+            console.warn('Video player may be stuck in loading state');
+            episodeNameSpan.innerHTML = `<span style="color: #ffaa00;">Video taking longer than expected. <a href="${embedUrl}" target="_blank" style="color: #E50914; text-decoration: underline;">Try opening in new tab</a></span>`;
+          }, 10000); // 10 seconds
           
           // Scroll to video player smoothly
           videoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
