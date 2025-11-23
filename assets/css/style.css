@@ -1130,35 +1130,37 @@ section {
   color: var(--text-primary);
 }
 
-/* Grid Layout for Movies Page - Netflix Style Horizontal Scrolling */
+/* Grid Layout for Movies Page - Column Grid Layout */
 .movies-grid {
-  display: flex;
-  gap: var(--spacing-md);
-  overflow-x: auto;
-  overflow-y: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-xl);
   padding: var(--spacing-xl) 0;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  flex-wrap: nowrap;
-}
-
-.movies-grid::-webkit-scrollbar {
-  display: none;
 }
 
 .movies-grid > li {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  width: 100%;
 }
 
 .movies-grid .movie-card {
-  width: 200px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
-  .movies-grid .movie-card {
-    width: 150px;
+  .movies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .movies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (min-width: 1400px) {
+  .movies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }

@@ -542,36 +542,7 @@
       }
     }
     
-    .movies-grid {
-      display: flex;
-      gap: var(--spacing-md);
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: var(--spacing-xl) 0;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    
-    .movies-grid::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .movies-grid > li {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-    }
-    
-    .movies-grid .movie-card {
-      width: 200px;
-    }
-    
-    @media (max-width: 768px) {
-      .movies-grid .movie-card {
-        width: 150px;
-      }
-    }
+    /* Movies grid is now handled by main CSS file */
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
