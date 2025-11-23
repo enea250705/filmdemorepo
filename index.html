@@ -27,7 +27,34 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Th.woff2') format('woff2');
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Rg.woff2') format('woff2');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Md.woff2') format('woff2');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Bd.woff2') format('woff2');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Blk.woff2') format('woff2');
+      font-weight: 900;
+    }
+  </style>
 
   <!-- Monetag -->
   <meta name="monetag" content="0f54a557bb1f88f3fc04961e28004070">
@@ -244,7 +271,7 @@
         <ul class="navbar-list">
 
           <li>
-            <a href="./index.html" class="navbar-link">Home</a>
+            <a href="./index.html" class="navbar-link active">Home</a>
           </li>
 
           <li>
@@ -280,44 +307,6 @@
             </div>
           </li>
 
-          <li>
-            <a href="#" class="navbar-link">Pricing</a>
-          </li>
-
-        </ul>
-
-        <ul class="navbar-social-list">
-
-          <li>
-            <a href="#" class="navbar-social-link">
-              <ion-icon name="logo-twitter"></ion-icon>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" class="navbar-social-link">
-              <ion-icon name="logo-facebook"></ion-icon>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" class="navbar-social-link">
-              <ion-icon name="logo-pinterest"></ion-icon>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" class="navbar-social-link">
-              <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" class="navbar-social-link">
-              <ion-icon name="logo-youtube"></ion-icon>
-            </a>
-          </li>
-
         </ul>
 
       </nav>
@@ -341,49 +330,31 @@
 
           <div class="hero-content">
 
-            <p class="hero-subtitle">FilmHaven</p>
-
             <h1 class="h1 hero-title">
-              Unlimited <strong>Movie</strong>, TVs Shows, & More.
+              Unlimited movies, TV shows, and more.
             </h1>
 
+            <p class="hero-subtitle">Watch anywhere. Cancel anytime.</p>
+
             <div class="meta-wrapper">
-
-              <div class="badge-wrapper">
-                <div class="badge badge-fill">PG 18</div>
-
-                <div class="badge badge-outline">HD</div>
-              </div>
-
-              <div class="ganre-wrapper">
-                <a href="#">Romance,</a>
-
-                <a href="#">Drama</a>
-              </div>
-
-              <div class="date-time">
-
-                <div>
-                  <ion-icon name="calendar-outline"></ion-icon>
-
-                  <time datetime="2022">2022</time>
-                </div>
-
-                <div>
-                  <ion-icon name="time-outline"></ion-icon>
-
-                  <time datetime="PT128M">128 min</time>
-                </div>
-
-              </div>
-
+              <div class="badge badge-fill">2024</div>
+              <div class="badge badge-outline">HD</div>
+              <span style="color: var(--text-secondary);">•</span>
+              <span style="color: var(--text-secondary);">Action</span>
+              <span style="color: var(--text-secondary);">•</span>
+              <span style="color: var(--text-secondary);">Drama</span>
             </div>
 
-            <button class="btn btn-primary">
-              <ion-icon name="play"></ion-icon>
-
-              <span>Watch now</span>
-            </button>
+            <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+              <button class="btn btn-primary">
+                <ion-icon name="play"></ion-icon>
+                <span>Play</span>
+              </button>
+              <button class="btn btn-secondary">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>More Info</span>
+              </button>
+            </div>
 
           </div>
 
@@ -400,37 +371,14 @@
 
       <section class="upcoming">
         <div class="container">
-
-          <div class="flex-wrapper">
-
-            <div class="title-wrapper">
-              <p class="section-subtitle">Online Streaming</p>
-
-              <h2 class="h2 section-title">Most Watched</h2>
-            </div>
-
-            <ul class="filter-list">
-
-              <li>
-                <button class="filter-btn">Movies</button>
-              </li>
-
-              <li>
-                <button class="filter-btn">TV Shows</button>
-              </li>
-
-              <li>
-                <button class="filter-btn">Anime</button>
-              </li>
-
-            </ul>
-
+          <div class="section-header">
+            <p class="section-subtitle">Online Streaming</p>
+            <h2 class="h2 section-title">Most Watched</h2>
           </div>
 
           <ul class="movies-list has-scrollbar">
             <!-- Movies will be loaded dynamically by JavaScript -->
           </ul>
-
         </div>
       </section>
 
@@ -449,15 +397,14 @@
 
       <section class="top-rated">
         <div class="container">
-
-          <p class="section-subtitle">Online Streaming</p>
-
-          <h2 class="h2 section-title">Top Rated Movies</h2>
+          <div class="section-header">
+            <p class="section-subtitle">Online Streaming</p>
+            <h2 class="h2 section-title">Top Rated Movies</h2>
+          </div>
 
           <ul class="movies-list has-scrollbar">
             <!-- Movies will be loaded dynamically by JavaScript -->
           </ul>
-
         </div>
       </section>
 
@@ -471,15 +418,14 @@
 
       <section class="tv-series">
         <div class="container">
-
-          <p class="section-subtitle">Best TV Series</p>
-
-          <h2 class="h2 section-title">World Best TV Series</h2>
+          <div class="section-header">
+            <p class="section-subtitle">Best TV Series</p>
+            <h2 class="h2 section-title">World Best TV Series</h2>
+          </div>
 
           <ul class="movies-list has-scrollbar">
             <!-- TV Series will be loaded dynamically by JavaScript -->
           </ul>
-
         </div>
       </section>
 
@@ -493,21 +439,19 @@
 
       <section class="cta">
         <div class="container">
-
-          <div class="title-wrapper">
-            <h2 class="cta-title">Trial start first 30 days.</h2>
-
-            <p class="cta-text">
+          <div class="section-header">
+            <h2 class="h2">Start Your Free Trial</h2>
+            <p class="cta-text" style="color: var(--text-secondary); margin-top: var(--spacing-md);">
               Enter your email to create or restart your membership.
             </p>
           </div>
 
-          <form action="" class="cta-form">
-            <input type="email" name="email" required placeholder="Enter your email" class="email-field">
-
-            <button type="submit" class="cta-form-btn">Get started</button>
+          <form action="" class="search-container" style="max-width: 500px;">
+            <input type="email" name="email" required placeholder="Enter your email" class="search-input" style="padding-right: 140px;">
+            <button type="submit" class="search-submit-btn" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: auto; padding: 0 var(--spacing-md); border-radius: var(--radius-full);">
+              Get started
+            </button>
           </form>
-
         </div>
       </section>
 

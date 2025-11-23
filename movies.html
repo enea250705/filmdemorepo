@@ -22,7 +22,34 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Th.woff2') format('woff2');
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Rg.woff2') format('woff2');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Md.woff2') format('woff2');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Bd.woff2') format('woff2');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Netflix Sans';
+      src: url('https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Blk.woff2') format('woff2');
+      font-weight: 900;
+    }
+  </style>
 
   <!-- Monetag -->
   <meta name="monetag" content="0f54a557bb1f88f3fc04961e28004070">
@@ -81,86 +108,90 @@
     
     .search-input {
       flex: 1;
-      padding: 16px 24px;
-      border: none;
+      padding: var(--spacing-md) var(--spacing-xl);
+      padding-right: 60px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-full);
       outline: none;
-      background: transparent;
-      font-size: 16px;
-      color: #f1f5f9;
-      font-family: var(--ff-poppins);
-      font-weight: 500;
-      letter-spacing: 0.3px;
+      background: var(--bg-card);
+      font-size: var(--fs-base);
+      color: var(--text-primary);
+      font-family: var(--font-primary);
+      font-weight: var(--fw-medium);
+      transition: all var(--transition-base);
+    }
+    
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-glow);
     }
     
     .search-input::placeholder {
-      color: #94a3b8;
-      font-weight: 400;
-      transition: color 0.3s ease;
-    }
-    
-    .search-input:focus::placeholder {
-      color: #64748b;
+      color: var(--text-tertiary);
+      font-weight: var(--fw-normal);
     }
     
     .search-submit-btn {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       border: none;
-      border-radius: 12px;
+      border-radius: var(--radius-full);
       width: 48px;
       height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
-      margin: 2px;
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-md);
     }
     
     .search-submit-btn:hover {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
     }
     
     .search-submit-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+      transform: translateY(-50%) scale(0.95);
     }
     
     .search-submit-btn ion-icon {
-      color: #1f2937;
+      color: var(--text-primary);
       font-size: 22px;
-      font-weight: 700;
     }
 
-    /* Modern Navigation Styles */
+    /* Modern Navigation Styles - Using CSS Variables */
     .header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(26, 26, 26, 0.95);
+      background: rgba(10, 10, 15, 0.8);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-      padding: 15px 0;
-      z-index: 1000;
-      transition: all 0.3s ease;
+      border-bottom: 1px solid var(--border-color);
+      z-index: var(--z-fixed);
+      transition: all var(--transition-base);
+    }
+
+    .header.active {
+      background: rgba(10, 10, 15, 0.95);
+      box-shadow: var(--shadow-md);
     }
 
     .header .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
+      padding: var(--spacing-md) var(--spacing-lg);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      transition: transform 0.3s ease;
+      transition: transform var(--transition-base);
     }
 
     .logo:hover {
@@ -180,7 +211,7 @@
     .navbar-list {
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: var(--spacing-md);
       margin: 0;
       padding: 0;
       list-style: none;
@@ -188,53 +219,41 @@
 
     .navbar-link {
       position: relative;
-      color: #f1f5f9;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 12px 20px;
-      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-medium);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--radius-sm);
       text-decoration: none;
-      transition: all 0.3s ease;
-      background: transparent;
-      border: 2px solid transparent;
+      transition: all var(--transition-base);
     }
 
-    .navbar-link::before {
+    .navbar-link::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
-      border-radius: 8px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width var(--transition-base);
     }
 
-    .navbar-link:hover {
-      color: #ffffff;
-      background: rgba(251, 191, 36, 0.1);
-      border-color: rgba(251, 191, 36, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .navbar-link:hover::before {
-      opacity: 1;
-    }
-
+    .navbar-link:hover,
     .navbar-link.active {
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
-      border-color: rgba(251, 191, 36, 0.5);
-      color: #fbbf24;
-      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+      color: var(--text-primary);
+    }
+
+    .navbar-link:hover::after,
+    .navbar-link.active::after {
+      width: 80%;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: var(--spacing-md);
     }
 
     /* Mobile Navigation */
@@ -273,25 +292,26 @@
     }
     
     .movies-page {
-      padding: 100px 0 60px;
-      background: var(--black);
+      padding: calc(80px + var(--spacing-xl)) 0 var(--spacing-3xl);
+      background: var(--bg-primary);
     }
     
     .page-header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: var(--spacing-3xl);
     }
     
     .page-title {
-      font-size: 3rem;
-      color: var(--white);
-      margin-bottom: 20px;
+      font-size: var(--fs-5xl);
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-md);
+      font-weight: var(--fw-bold);
     }
     
     .page-subtitle {
-      color: var(--gray);
-      font-size: 1.2rem;
-      margin-bottom: 20px;
+      color: var(--text-secondary);
+      font-size: var(--fs-xl);
+      margin-bottom: var(--spacing-lg);
     }
 
     .page-switch {
@@ -301,24 +321,23 @@
     .switch-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      background: linear-gradient(135deg, #f5c518 0%, #d4af0a 100%);
-      color: #1a1a1a;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-xl);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--text-primary);
       text-decoration: none;
-      border-radius: 25px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
+      border-radius: var(--radius-full);
+      font-weight: var(--fw-semibold);
+      font-size: var(--fs-base);
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-md);
       border: none;
       cursor: pointer;
     }
 
     .switch-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(245, 197, 24, 0.4);
-      background: linear-gradient(135deg, #d4af0a 0%, #f5c518 100%);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
     }
 
     .switch-btn ion-icon {
@@ -327,9 +346,10 @@
 
     /* Simplified Footer Styles */
     .footer {
-      background: var(--black);
-      padding: 40px 0;
+      background: var(--bg-secondary);
+      padding: var(--spacing-3xl) 0 var(--spacing-xl);
       text-align: center;
+      border-top: 1px solid var(--border-color);
     }
 
     .footer-logo {
@@ -353,12 +373,12 @@
     
     /* Compact Filters Section */
     .compact-filters {
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      border: 1px solid #333;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
     }
     
     .filters-row {
@@ -382,28 +402,30 @@
     }
     
     .category-btn {
-      padding: 8px 16px;
-      border: 1px solid #333;
-      border-radius: 20px;
-      background: transparent;
-      color: #b0b0b0;
-      font-size: 13px;
-      font-weight: 500;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all var(--transition-base);
       white-space: nowrap;
     }
     
     .category-btn:hover {
-      border-color: #f5c518;
-      color: #f5c518;
+      border-color: var(--primary);
+      color: var(--text-primary);
+      transform: translateY(-2px);
     }
     
     .category-btn.active {
-      background: linear-gradient(135deg, #f5c518 0%, #ffd700 100%);
-      border-color: #f5c518;
-      color: #000000;
-      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-color: var(--primary);
+      color: var(--text-primary);
+      font-weight: var(--fw-semibold);
+      box-shadow: var(--shadow-md);
     }
     
     /* Compact Selects */
@@ -442,28 +464,30 @@
     }
     
     .genre-chip {
-      padding: 6px 12px;
-      border: 1px solid #333;
-      border-radius: 15px;
-      background: transparent;
-      color: #b0b0b0;
-      font-size: 12px;
-      font-weight: 500;
+      padding: var(--spacing-xs) var(--spacing-md);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all var(--transition-base);
       white-space: nowrap;
     }
     
     .genre-chip:hover {
-      border-color: #f5c518;
-      color: #f5c518;
+      border-color: var(--primary);
+      color: var(--text-primary);
+      transform: translateY(-2px);
     }
     
     .genre-chip.active {
-      background: linear-gradient(135deg, #f5c518 0%, #ffd700 100%);
-      border-color: #f5c518;
-      color: #000000;
-      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-color: var(--primary);
+      color: var(--text-primary);
+      font-weight: var(--fw-semibold);
+      box-shadow: var(--shadow-md);
     }
     
     /* Responsive Design */
@@ -519,9 +543,34 @@
     }
     
     .movies-grid {
-      display: grid;
-      gap: 50px;
-      margin-bottom: 40px;
+      display: flex;
+      gap: var(--spacing-md);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: var(--spacing-xl) 0;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .movies-grid::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .movies-grid > li {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+    
+    .movies-grid .movie-card {
+      width: 200px;
+    }
+    
+    @media (max-width: 768px) {
+      .movies-grid .movie-card {
+        width: 150px;
+      }
     }
     
     /* Responsive grid columns */
@@ -653,70 +702,73 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      margin-top: 40px;
-      padding: 20px;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      border-radius: 12px;
-      border: 1px solid #333;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-2xl);
+      padding: var(--spacing-lg);
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
     }
     
     .pagination-btn {
-      padding: 12px 24px;
-      border: 1px solid #f5c518;
+      padding: var(--spacing-md) var(--spacing-xl);
+      border: 2px solid var(--primary);
       background: transparent;
-      color: #f5c518;
-      border-radius: 8px;
+      color: var(--primary);
+      border-radius: var(--radius-md);
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      font-size: 14px;
+      transition: all var(--transition-base);
+      font-weight: var(--fw-medium);
+      font-size: var(--fs-base);
       min-width: 100px;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
     }
     
     .pagination-btn:hover:not(:disabled) {
-      background: #f5c518;
-      color: #000000;
+      background: var(--primary);
+      color: var(--text-primary);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(245, 197, 24, 0.3);
+      box-shadow: var(--shadow-md);
     }
     
     .pagination-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
-      border-color: #666;
-      color: #666;
+      border-color: var(--text-tertiary);
+      color: var(--text-tertiary);
     }
     
     .pagination-info {
-      color: #ffffff;
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 12px 20px;
-      background: rgba(245, 197, 24, 0.1);
-      border-radius: 8px;
-      border: 1px solid rgba(245, 197, 24, 0.3);
+      color: var(--text-primary);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-medium);
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
     }
     
     .loading {
       text-align: center;
-      color: var(--white);
-      padding: 60px 20px;
-      font-size: 1.1rem;
+      color: var(--text-secondary);
+      padding: var(--spacing-3xl) var(--spacing-xl);
+      font-size: var(--fs-lg);
     }
     
     .error {
       text-align: center;
-      color: var(--red);
-      padding: 60px 20px;
-      font-size: 1.1rem;
+      color: #ef4444;
+      padding: var(--spacing-3xl) var(--spacing-xl);
+      font-size: var(--fs-lg);
     }
     
     .no-results {
       text-align: center;
-      color: var(--gray);
-      padding: 60px 20px;
-      font-size: 1.1rem;
+      color: var(--text-secondary);
+      padding: var(--spacing-3xl) var(--spacing-xl);
+      font-size: var(--fs-lg);
     }
     
     /* Dropdown Styles */
@@ -1332,23 +1384,27 @@
         });
         
         movieCard.innerHTML = `
-          <figure class="card-banner">
-            <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
-          </figure>
+          <a href="./movie-details.html?id=${movie.id}">
+            <figure class="card-banner">
+              <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
+              <div class="card-info">
+                <h3 class="card-title">${movie.title}</h3>
+                <div class="card-meta">
+                  <div class="rating">
+                    <ion-icon name="star"></ion-icon>
+                    <span>${movie.rating}</span>
+                  </div>
+                  <div class="duration">
+                    <ion-icon name="time-outline"></ion-icon>
+                    <span>${movie.duration}</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+          </a>
           <div class="title-wrapper">
             <h3 class="card-title">${movie.title}</h3>
             <time datetime="${movie.year}">${movie.year}</time>
-          </div>
-          <div class="card-meta">
-            <div class="badge badge-outline">${movie.quality}</div>
-            <div class="duration">
-              <ion-icon name="time-outline"></ion-icon>
-              <time datetime="PT${movie.duration}">${movie.duration}</time>
-            </div>
-            <div class="rating">
-              <ion-icon name="star"></ion-icon>
-              <data>${movie.rating}</data>
-            </div>
           </div>
         `;
         container.appendChild(movieCard);

@@ -233,24 +233,24 @@ function createMovieCard(movie) {
     <a href="./movie-details.html?id=${movie.id}">
       <figure class="card-banner">
         <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
+        <div class="card-info">
+          <h3 class="card-title">${movie.title}</h3>
+          <div class="card-meta">
+            <div class="rating">
+              <ion-icon name="star"></ion-icon>
+              <span>${movie.rating}</span>
+            </div>
+            <div class="duration">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>${movie.duration}</span>
+            </div>
+          </div>
+        </div>
       </figure>
     </a>
     <div class="title-wrapper">
-      <a href="./movie-details.html?id=${movie.id}">
-        <h3 class="card-title">${movie.title}</h3>
-      </a>
+      <h3 class="card-title">${movie.title}</h3>
       <time datetime="${movie.year}">${movie.year}</time>
-    </div>
-    <div class="card-meta">
-      <div class="badge badge-outline">${movie.quality}</div>
-      <div class="duration">
-        <ion-icon name="time-outline"></ion-icon>
-        <time datetime="PT${movie.duration}">${movie.duration}</time>
-      </div>
-      <div class="rating">
-        <ion-icon name="star"></ion-icon>
-        <data>${movie.rating}</data>
-      </div>
     </div>
   `;
   return card;
