@@ -47,6 +47,20 @@
       };
       document.body.appendChild(adScript2);
       
+      // Load fpyf8 ad script asynchronously
+      const adScriptFpyf8 = document.createElement('script');
+      adScriptFpyf8.src = 'https://fpyf8.com/88/tag.min.js';
+      adScriptFpyf8.setAttribute('data-zone', '187556');
+      adScriptFpyf8.async = true;
+      adScriptFpyf8.setAttribute('data-cfasync', 'false');
+      adScriptFpyf8.onerror = function() {
+        console.warn('Fpyf8 ad script failed to load');
+      };
+      adScriptFpyf8.onload = function() {
+        console.log('Fpyf8 ad script loaded successfully');
+      };
+      document.body.appendChild(adScriptFpyf8);
+      
       // Load third ad script (highperformanceformat) - configuration first, then loader
       const adConfig3 = document.createElement('script');
       adConfig3.type = 'text/javascript';
