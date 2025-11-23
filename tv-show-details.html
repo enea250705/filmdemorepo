@@ -737,8 +737,17 @@
 
         // Load first season episodes by default
         if (seasons.length > 0) {
-          currentSeason = seasons[0].season_number;
+          // Find first non-zero season (season 0 is usually specials)
+          const firstSeason = seasons.find(s => s.season_number > 0) || seasons[0];
+          currentSeason = firstSeason.season_number;
+          console.log('Loading first season:', currentSeason);
           await loadEpisodes(currentSeason);
+        } else {
+          console.warn('No seasons available for this TV show');
+          const episodesGrid = document.getElementById('episodes-grid');
+          if (episodesGrid) {
+            episodesGrid.innerHTML = '<div class="error">No seasons available for this TV show.</div>';
+          }
         }
 
       } catch (error) {
@@ -810,31 +819,57 @@
       await loadEpisodes(seasonNumber);
     }
 
-    // Load episodes for a season
+    // Load episodes for a season - With timeout protection
     async function loadEpisodes(seasonNumber) {
       const episodesGrid = document.getElementById('episodes-grid');
-      episodesGrid.innerHTML = '<div class="loading">Loading episodes...</div>';
+      if (!episodesGrid) {
+        console.error('Episodes grid not found');
+        return;
+      }
+
+      if (!currentTVShow || !currentTVShow.id) {
+        console.error('No TV show loaded');
+        episodesGrid.innerHTML = '<div class="error">TV show not loaded. Please refresh the page.</div>';
+        return;
+      }
+
+      // Show loading state
+      episodesGrid.innerHTML = '<div class="loading" style="color: #fff; padding: 40px; text-align: center;">Loading episodes...</div>';
 
       try {
-        console.log('Loading episodes for season:', seasonNumber);
+        console.log('Loading episodes for season:', seasonNumber, 'TV Show ID:', currentTVShow.id);
         
-        // Get season details
-        const seasonDetails = await window.movieAPI.getTVSeasonDetails(currentTVShow.id, seasonNumber);
+        // Add timeout protection
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Request timeout - API took too long to respond')), 15000);
+        });
+
+        // Get season details with timeout
+        const apiCall = window.movieAPI.getTVSeasonDetails(currentTVShow.id, seasonNumber);
+        const seasonDetails = await Promise.race([apiCall, timeoutPromise]);
         
-        if (!seasonDetails || !seasonDetails.episodes) {
-          episodesGrid.innerHTML = '<div class="error">No episodes found for this season</div>';
+        console.log('Season details received:', seasonDetails);
+        
+        if (!seasonDetails) {
+          episodesGrid.innerHTML = '<div class="error">No season data received. Please try again.</div>';
+          return;
+        }
+
+        if (!seasonDetails.episodes || seasonDetails.episodes.length === 0) {
+          episodesGrid.innerHTML = '<div class="error">No episodes found for this season.</div>';
           return;
         }
 
         episodes = seasonDetails.episodes;
-        console.log('Episodes loaded:', episodes);
+        console.log('Episodes loaded:', episodes.length, 'episodes');
 
         // Display episodes
         displayEpisodes(episodes);
 
       } catch (error) {
         console.error('Error loading episodes:', error);
-        episodesGrid.innerHTML = '<div class="error">Error loading episodes</div>';
+        const errorMessage = error.message || 'Error loading episodes. Please try again.';
+        episodesGrid.innerHTML = `<div class="error" style="color: #ff4444; padding: 40px; text-align: center;">${errorMessage}</div>`;
       }
     }
 
@@ -842,11 +877,17 @@
     function displayEpisodes(episodes) {
       const episodesGrid = document.getElementById('episodes-grid');
       
+      if (!episodesGrid) {
+        console.error('Episodes grid not found');
+        return;
+      }
+      
       if (!episodes || episodes.length === 0) {
         episodesGrid.innerHTML = '<div class="error">No episodes available</div>';
         return;
       }
 
+      console.log('Displaying', episodes.length, 'episodes');
       episodesGrid.innerHTML = episodes.map(episode => `
         <div class="episode-card" onclick="watchEpisode(${episode.episode_number})">
           <img src="https://image.tmdb.org/t/p/w300${episode.still_path || '/placeholder.jpg'}" alt="${episode.name}" class="episode-still" onerror="this.src='./assets/images/placeholder.jpg';">
@@ -878,9 +919,13 @@
       const episodeName = episode ? episode.name : `Episode ${episodeNumber}`;
       
       // Create embed URL for TV show episode
-      const embedUrl = `https://player.autoembed.cc/embed/tv/${currentTVShow.id}/${currentSeason}/${episodeNumber}`;
+      // API format: https://player.autoembed.cc/embed/tv/{id}/{season}/{episode}
+      // Accepts both TMDb ID (number) or IMDb ID (with tt prefix)
+      const tvShowId = currentTVShow.id; // TMDb ID from API
+      const embedUrl = `https://player.autoembed.cc/embed/tv/${tvShowId}/${currentSeason}/${episodeNumber}`;
       
       console.log('Loading episode stream URL:', embedUrl);
+      console.log('TV Show ID:', tvShowId, 'Season:', currentSeason, 'Episode:', episodeNumber);
       
       // Show video player container
       const videoContainer = document.getElementById('video-player-container');
