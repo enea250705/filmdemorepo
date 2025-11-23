@@ -1282,197 +1282,214 @@
       }
     }
 
-    // Search functionality
+    // Search functionality - Clean and simple
     function performTVSearch() {
       const searchInput = document.getElementById('tv-search');
-      
       if (!searchInput) {
-        console.error('TV search input not found!');
+        console.error('TV search input not found');
         return;
       }
       
       const query = searchInput.value.trim();
       
-      console.log('Perform TV search called with query:', query);
-      
+      // Clear search if empty
       if (query === '') {
-        // If search is empty, clear search and show popular TV shows
-        console.log('Empty TV search query, clearing search');
         currentSearchQuery = '';
         currentPage = 1;
         loadTVShows();
         return;
       }
       
-      console.log('Setting TV search query to:', query);
+      // Perform search
       currentSearchQuery = query;
       currentPage = 1;
       loadTVShows();
     }
 
-    // Load TV shows based on current filters
+    // Load TV shows based on current filters - Clean and optimized
     async function loadTVShows() {
       const container = document.getElementById('tv-container');
+      if (!container) {
+        console.error('TV container not found');
+        return;
+      }
+
+      // Show loading state
       container.innerHTML = '<div class="loading">Loading TV shows...</div>';
+      const pagination = document.getElementById('pagination');
+      if (pagination) pagination.style.display = 'none';
 
       try {
-        console.log('Loading TV shows for category:', currentCategory, 'page:', currentPage);
-        console.log('Current filters - Genre:', currentGenre, 'Year:', currentYear, 'Rating:', currentRating);
-        console.log('Search query:', currentSearchQuery);
+        // Fetch TV shows based on current state
+        const apiResponse = await fetchTVShows();
         
-        let apiResponse = null;
-        
-        // If we have a search query, use search API
-        if (currentSearchQuery) {
-          console.log('Searching for TV shows:', currentSearchQuery);
-          
-          try {
-            const searchResponse = await window.movieAPI.searchTVSeries(currentSearchQuery, currentPage);
-            console.log('TV search response:', searchResponse);
-            
-            if (searchResponse && searchResponse.movies && searchResponse.movies.length > 0) {
-              apiResponse = searchResponse;
-              console.log('Using TV search response:', apiResponse);
-            } else {
-              apiResponse = {
-                movies: [],
-                totalPages: 0,
-                totalResults: 0
-              };
-              console.log('No TV search results found');
-            }
-          } catch (searchError) {
-            console.error('TV search error:', searchError);
-            apiResponse = {
-              movies: [],
-              totalPages: 0,
-              totalResults: 0
-            };
-          }
-        }
-        // If we have filters, use discover endpoint for better filtering
-        else if (currentGenre || currentYear || currentRating) {
-          apiResponse = await window.movieAPI.getFilteredTVSeries({
-            genre: currentGenre,
-            year: currentYear,
-            rating: currentRating,
-            page: currentPage
-          });
-        }
-        // Get TV shows based on category
-        else {
-          switch (currentCategory) {
-            case 'popular':
-              apiResponse = await window.movieAPI.getPopularTVSeries(currentPage);
-              break;
-            case 'top-rated':
-              apiResponse = await window.movieAPI.getTopRatedTVSeries(currentPage);
-              break;
-            case 'on-the-air':
-              apiResponse = await window.movieAPI.getOnTheAirTVSeries(currentPage);
-              break;
-            case 'airing-today':
-              apiResponse = await window.movieAPI.getAiringTodayTVSeries(currentPage);
-              break;
-          }
-        }
-
+        // Handle API response
         if (!apiResponse || !apiResponse.movies) {
-          container.innerHTML = '<div class="error">Error loading TV shows. Please try again.</div>';
+          showError('Unable to load TV shows. Please try again later.');
           return;
         }
 
-        let shows = apiResponse.movies;
-        totalPages = apiResponse.totalPages;
-        totalResults = apiResponse.totalResults;
+        const { movies: shows, totalPages: pages, totalResults } = apiResponse;
+        totalPages = pages || 1;
 
-        console.log('TV shows from API:', shows);
-        console.log('Total pages:', totalPages, 'Total results:', totalResults);
-
-        if (shows.length === 0) {
-          container.innerHTML = '<div class="no-results">No TV shows found matching your criteria.</div>';
-          document.getElementById('pagination').style.display = 'none';
+        // Handle empty results
+        if (!shows || shows.length === 0) {
+          showNoResults();
           return;
         }
 
+        // Display results
         displayTVShows(shows);
         updatePagination();
 
       } catch (error) {
         console.error('Error loading TV shows:', error);
-        container.innerHTML = '<div class="error">Error loading TV shows. Please try again.</div>';
+        showError('Failed to load TV shows. Please check your connection and try again.');
       }
     }
 
-    // Display TV shows in grid
+    // Fetch TV shows from API - Clean separation of concerns
+    async function fetchTVShows() {
+      // Priority 1: Search query
+      if (currentSearchQuery) {
+        return await window.movieAPI.searchTVSeries(currentSearchQuery, currentPage);
+      }
+
+      // Priority 2: Filtered results
+      if (currentGenre || currentYear || currentRating) {
+        return await window.movieAPI.getFilteredTVSeries({
+          genre: currentGenre,
+          year: currentYear,
+          rating: currentRating,
+          page: currentPage
+        });
+      }
+
+      // Priority 3: Category-based results
+      const categoryMap = {
+        'popular': () => window.movieAPI.getPopularTVSeries(currentPage),
+        'top-rated': () => window.movieAPI.getTopRatedTVSeries(currentPage),
+        'on-the-air': () => window.movieAPI.getOnTheAirTVSeries(currentPage),
+        'airing-today': () => window.movieAPI.getAiringTodayTVSeries(currentPage)
+      };
+
+      const fetchFunction = categoryMap[currentCategory] || categoryMap['popular'];
+      return await fetchFunction();
+    }
+
+    // Show error message
+    function showError(message) {
+      const container = document.getElementById('tv-container');
+      if (container) {
+        container.innerHTML = `<div class="error">${message}</div>`;
+      }
+      const pagination = document.getElementById('pagination');
+      if (pagination) pagination.style.display = 'none';
+    }
+
+    // Show no results message
+    function showNoResults() {
+      const container = document.getElementById('tv-container');
+      if (container) {
+        container.innerHTML = '<div class="no-results">No TV shows found matching your criteria. Try adjusting your filters.</div>';
+      }
+      const pagination = document.getElementById('pagination');
+      if (pagination) pagination.style.display = 'none';
+    }
+
+    // Display TV shows in grid - Clean and optimized
     function displayTVShows(shows) {
       const container = document.getElementById('tv-container');
+      if (!container) {
+        console.error('TV container not found');
+        return;
+      }
+
+      // Clear container
       container.innerHTML = '';
 
+      // Create and append TV show cards
       shows.forEach(show => {
-        const tvCard = document.createElement('li');
-        tvCard.className = 'tv-card';
-        
-        // Add both click and touch event handlers for better mobile support
-        let touchStartY = 0;
-        let touchStartX = 0;
-        let isScrolling = false;
-        
-        tvCard.addEventListener('touchstart', (e) => {
-          touchStartY = e.touches[0].clientY;
-          touchStartX = e.touches[0].clientX;
-          isScrolling = false;
-        });
-        
-        tvCard.addEventListener('touchmove', (e) => {
-          const touchY = e.touches[0].clientY;
-          const touchX = e.touches[0].clientX;
-          const deltaY = Math.abs(touchY - touchStartY);
-          const deltaX = Math.abs(touchX - touchStartX);
-          
-          // If user is scrolling (moving more than 10px), don't trigger tap
-          if (deltaY > 10 || deltaX > 10) {
-            isScrolling = true;
-          }
-        });
-        
-        tvCard.addEventListener('touchend', (e) => {
-          if (!isScrolling) {
-            e.preventDefault();
-            viewTVDetails(show.id);
-          }
-        });
-        
-        tvCard.addEventListener('click', (e) => {
-          e.preventDefault();
-          viewTVDetails(show.id);
-        });
-        
-        tvCard.innerHTML = `
-          <a href="./tv-show-details.html?id=${show.id}&type=tv">
-            <figure class="card-banner">
-              <img src="${show.poster}" alt="${show.title}" loading="lazy">
-              <div class="card-info">
-                <h3 class="card-title">${show.title}</h3>
-                <div class="card-meta">
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-                    <span>${show.rating}</span>
-                  </div>
-                  <div class="duration">
-                    <ion-icon name="time-outline"></ion-icon>
-                    <span>${show.duration || 'TV Series'}</span>
-                  </div>
+        const tvCard = createTVShowCard(show);
+        container.appendChild(tvCard);
+      });
+    }
+
+    // Create a single TV show card element
+    function createTVShowCard(show) {
+      const tvCard = document.createElement('li');
+      tvCard.className = 'tv-card';
+      
+      // Add navigation handlers
+      addCardNavigation(tvCard, show.id);
+      
+      // Set card content
+      tvCard.innerHTML = `
+        <a href="./tv-show-details.html?id=${show.id}&type=tv">
+          <figure class="card-banner">
+            <img src="${show.poster || './assets/images/placeholder.jpg'}" 
+                 alt="${show.title || 'TV Show'}" 
+                 loading="lazy"
+                 onerror="this.src='./assets/images/placeholder.jpg';">
+            <div class="card-info">
+              <h3 class="card-title">${show.title || 'Untitled'}</h3>
+              <div class="card-meta">
+                <div class="rating">
+                  <ion-icon name="star"></ion-icon>
+                  <span>${show.rating || 'N/A'}</span>
+                </div>
+                <div class="duration">
+                  <ion-icon name="time-outline"></ion-icon>
+                  <span>${show.duration || 'TV Series'}</span>
                 </div>
               </div>
-            </figure>
-          </a>
-          <div class="title-wrapper">
-            <h3 class="card-title">${show.title}</h3>
-            <time datetime="${show.year}">${show.year}</time>
-          </div>
-        `;
-        container.appendChild(tvCard);
+            </div>
+          </figure>
+        </a>
+        <div class="title-wrapper">
+          <h3 class="card-title">${show.title || 'Untitled'}</h3>
+          <time datetime="${show.year || ''}">${show.year || 'N/A'}</time>
+        </div>
+      `;
+      
+      return tvCard;
+    }
+
+    // Add navigation handlers to TV show card
+    function addCardNavigation(card, showId) {
+      let touchStartY = 0;
+      let touchStartX = 0;
+      let isScrolling = false;
+      
+      // Touch handlers for mobile
+      card.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+        isScrolling = false;
+      });
+      
+      card.addEventListener('touchmove', (e) => {
+        const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+        const deltaY = Math.abs(touchY - touchStartY);
+        const deltaX = Math.abs(touchX - touchStartX);
+        
+        if (deltaY > 10 || deltaX > 10) {
+          isScrolling = true;
+        }
+      });
+      
+      card.addEventListener('touchend', (e) => {
+        if (!isScrolling) {
+          e.preventDefault();
+          viewTVDetails(showId);
+        }
+      });
+      
+      // Click handler for desktop
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        viewTVDetails(showId);
       });
     }
 
@@ -1500,12 +1517,18 @@
       }
     }
 
-    // Apply filters
+    // Apply filters - Clean reset and reload
     function applyFilters() {
       currentPage = 1;
-      currentSearchQuery = ''; // Clear search when applying filters
+      currentSearchQuery = '';
+      
+      // Clear search input
       const searchInput = document.getElementById('tv-search');
-      if (searchInput) searchInput.value = '';
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.style.borderColor = '';
+      }
+      
       loadTVShows();
     }
 
