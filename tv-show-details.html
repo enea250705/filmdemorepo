@@ -280,6 +280,150 @@
       border-radius: 10px;
       margin-bottom: 10px;
     }
+    
+    /* Video Player Container - Netflix Style - Same as movie-details */
+    .video-player-container {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 1);
+      margin-top: 40px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    .video-player-wrapper {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      background: #000;
+      min-height: 500px;
+    }
+    
+    @media (min-width: 768px) {
+      .video-player-wrapper {
+        min-height: 600px;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .video-player-wrapper {
+        min-height: 700px;
+      }
+    }
+    
+    @media (min-width: 1400px) {
+      .video-player-wrapper {
+        min-height: 800px;
+      }
+    }
+    
+    .video-player-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .video-player-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+    }
+    
+    .video-player-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: rgba(0, 0, 0, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .player-info {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    
+    .player-info span {
+      color: #E50914;
+      font-weight: 700;
+    }
+    
+    .player-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .player-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #fff;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .player-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #E50914;
+      transform: translateY(-2px);
+    }
+    
+    .player-btn:active {
+      transform: translateY(0);
+    }
+    
+    .player-btn ion-icon {
+      font-size: 18px;
+    }
+    
+    #fullscreen-btn:hover {
+      background: #E50914;
+      border-color: #E50914;
+    }
+    
+    @media (max-width: 768px) {
+      .video-player-wrapper {
+        min-height: 400px;
+      }
+      
+      .video-player-controls {
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      
+      .player-info {
+        font-size: 14px;
+        width: 100%;
+      }
+      
+      .player-actions {
+        align-self: flex-end;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
 
     @media (max-width: 768px) {
       .tv-show-title {
@@ -467,6 +611,26 @@
             <div class="loading">Select a season to view episodes</div>
           </div>
         </div>
+        
+        <!-- Video Player Container (Same as movie-details) -->
+        <div class="video-player-container" id="video-player-container" style="display: none;">
+          <div class="video-player-wrapper">
+            <iframe id="video-player-iframe" src="" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="video-player-controls">
+            <div class="player-info">
+              <span id="current-episode-name">Select an episode to start watching</span>
+            </div>
+            <div class="player-actions">
+              <button class="player-btn" id="fullscreen-btn" title="Fullscreen">
+                <ion-icon name="expand-outline"></ion-icon>
+              </button>
+              <button class="player-btn" id="refresh-btn" title="Refresh">
+                <ion-icon name="refresh-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -482,6 +646,37 @@
   -->
   <script src="./assets/js/movie-api.js?v=4"></script>
   <script src="./assets/js/script.js"></script>
+  
+  <!-- Include openMoviePlayer function for TV shows -->
+  <script>
+    // Make sure openMoviePlayer is available (from script.js)
+    if (typeof openMoviePlayer === 'undefined') {
+      // Fallback function if not available
+      window.openMoviePlayer = function(embedUrl, title) {
+        const modal = document.createElement('div');
+        modal.className = 'video-modal';
+        modal.innerHTML = `
+          <div class="modal-overlay">
+            <div class="modal-content">
+              <button class="modal-close" onclick="this.closest('.video-modal').remove()">&times;</button>
+              <h3>${title}</h3>
+              <div class="video-container">
+                <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close on overlay click
+        modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+          if (e.target === modal.querySelector('.modal-overlay')) {
+            modal.remove();
+          }
+        });
+      };
+    }
+  </script>
 
   <!-- TV Show Details Script -->
   <script>
@@ -669,7 +864,7 @@
       `).join('');
     }
 
-    // Watch episode
+    // Watch episode - Use embedded player like movies
     function watchEpisode(episodeNumber) {
       if (!currentTVShow) {
         console.error('No TV show loaded');
@@ -678,14 +873,75 @@
 
       console.log('Watching episode:', episodeNumber, 'of season:', currentSeason);
       
-      // Create autoembed.cc URL for TV show
+      // Get episode info
+      const episode = episodes.find(ep => ep.episode_number === episodeNumber);
+      const episodeName = episode ? episode.name : `Episode ${episodeNumber}`;
+      
+      // Create embed URL for TV show episode
       const embedUrl = `https://player.autoembed.cc/embed/tv/${currentTVShow.id}/${currentSeason}/${episodeNumber}`;
       
-      console.log('Opening stream URL:', embedUrl);
+      console.log('Loading episode stream URL:', embedUrl);
       
-      // Open in new window/tab
-      window.open(embedUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+      // Show video player container
+      const videoContainer = document.getElementById('video-player-container');
+      const videoIframe = document.getElementById('video-player-iframe');
+      const episodeNameSpan = document.getElementById('current-episode-name');
+      
+      if (videoContainer && videoIframe && episodeNameSpan) {
+        // Set episode info
+        episodeNameSpan.innerHTML = `<span>Now playing:</span> ${currentTVShow.title} - S${String(currentSeason).padStart(2, '0')}E${String(episodeNumber).padStart(2, '0')} - ${episodeName}`;
+        
+        // Load the video
+        videoIframe.src = embedUrl;
+        
+        // Show the container
+        videoContainer.style.display = 'block';
+        
+        // Scroll to video player smoothly
+        setTimeout(() => {
+          videoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      } else {
+        // Fallback: open in new window if elements not found
+        console.warn('Video player elements not found, opening in new window');
+        console.warn('videoContainer:', videoContainer, 'videoIframe:', videoIframe, 'episodeNameSpan:', episodeNameSpan);
+        window.open(embedUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+      }
     }
+    
+    // Initialize player controls
+    function initializePlayerControls() {
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const iframe = document.getElementById('video-player-iframe');
+      
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+          } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+          } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+          }
+        });
+      }
+      
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+          const currentSrc = iframe.src;
+          iframe.src = '';
+          setTimeout(() => {
+            iframe.src = currentSrc;
+          }, 100);
+        });
+      }
+    }
+    
+    // Initialize controls when page loads (after elements are created)
+    setTimeout(function() {
+      initializePlayerControls();
+    }, 1500);
   </script>
 </body>
 
