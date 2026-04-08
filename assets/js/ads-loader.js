@@ -1,174 +1,234 @@
 /**
- * Safe Ad Script Loader
- * Loads ads asynchronously after page content has loaded
- * Prevents blocking of main content
+ * ============================================================
+ *  AD MANAGER — Popunders, Popups & Banner Scripts
+ *  Add your ad network scripts in the arrays below.
+ *  The loader handles timing, error isolation, and triggers.
+ * ============================================================
  */
 
-(function() {
+(function () {
   'use strict';
-  
-  // Configuration
-  const AD_CONFIG = {
-    monetagId: '0f54a557bb1f88f3fc04961e28004070',
-    adScriptVar: 'c15841a454a1e0a216083faa6a9a9554',
-    maxPopunders: 3, // Reduced to be less aggressive
-    initDelay: 2000, // Wait 2 seconds before initializing popunders
-    loadDelay: 1000  // Wait 1 second after page load before loading ads
+
+  /* ──────────────────────────────────────────────────────────
+     SECTION 1 — POPUNDER SCRIPTS
+     Each entry fires once per user session (first click).
+     Set `enabled: false` to temporarily disable one.
+  ────────────────────────────────────────────────────────── */
+  var POPUNDER_SCRIPTS = [
+
+    /* ── Monetag popunder ── */
+    {
+      id: 'monetag',
+      enabled: true,
+      type: 'inline',   // inline JS code
+      code: `(function(){var y=window,v="c15841a454a1e0a216083faa6a9a9554",e=[["siteId",923*757-4*28+4543465],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],x=["d3d3LmludGVsbGlwb3B1cC5jb20vY2dhcmxpYy5taW4uY3Nz","ZDNtcjd5MTU0ZDJxZzUuY2xvdWRmcm9udC5uZXQvRkJOL2ZsZWFmbGV0LmFqYXgubWluLmpz"],h=-1,o,d,w=function(){clearTimeout(d);h++;if(x[h]&&!(1784918438000<(new Date).getTime()&&1<h)){o=y.document.createElement("script");o.type="text/javascript";o.async=!0;var g=y.document.getElementsByTagName("script")[0];o.src="https://"+atob(x[h]);o.crossOrigin="anonymous";o.onerror=w;o.onload=function(){clearTimeout(d);y[v.slice(0,16)+v.slice(0,16)]||w()};d=setTimeout(w,5E3);g.parentNode.insertBefore(o,g)}};if(!y[v]){try{Object.freeze(y[v]=e)}catch(e){}w()}})();`
+    },
+
+    /* ── ADD NEW POPUNDER SCRIPTS BELOW ──────────────────────
+       Example — external src:
+       {
+         id: 'network2-popunder',
+         enabled: true,
+         type: 'src',
+         src: 'https://example.com/popunder.js',
+         attrs: { 'data-zone': '12345' }
+       }
+
+       Example — inline code:
+       {
+         id: 'network3-popunder',
+         enabled: true,
+         type: 'inline',
+         code: '/* paste raw JS here *\/'
+       }
+    ────────────────────────────────────────────────────────── */
+
+  ];
+
+
+  /* ──────────────────────────────────────────────────────────
+     SECTION 2 — POPUP SCRIPTS
+     Fire on first user interaction (click or scroll).
+  ────────────────────────────────────────────────────────── */
+  var POPUP_SCRIPTS = [
+
+    /* ── ADD POPUP SCRIPTS HERE ──────────────────────────────
+       {
+         id: 'popup-network1',
+         enabled: true,
+         type: 'src',
+         src: 'https://example.com/popup.js',
+         attrs: {}
+       }
+    ────────────────────────────────────────────────────────── */
+
+  ];
+
+
+  /* ──────────────────────────────────────────────────────────
+     SECTION 3 — BANNER / DISPLAY AD SCRIPTS
+     Loaded silently after page paint, no user trigger needed.
+  ────────────────────────────────────────────────────────── */
+  var BANNER_SCRIPTS = [
+
+    /* ── effectivegatecpm #1 ── */
+    {
+      id: 'effectivegatecpm-1',
+      enabled: true,
+      type: 'src',
+      src: 'https://pl28120168.effectivegatecpm.com/a8/d0/49/a8d0498b8dafa67dfc94c7ff817bbbbc.js',
+      attrs: {}
+    },
+
+    /* ── effectivegatecpm #2 ── */
+    {
+      id: 'effectivegatecpm-2',
+      enabled: true,
+      type: 'src',
+      src: 'https://pl28120183.effectivegatecpm.com/0f/2c/43/0f2c431bf8d3dae6a00a87b5ff3dc9eb.js',
+      attrs: {}
+    },
+
+    /* ── fpyf8 ── */
+    {
+      id: 'fpyf8',
+      enabled: true,
+      type: 'src',
+      src: 'https://fpyf8.com/88/tag.min.js',
+      attrs: { 'data-zone': '187556', 'data-cfasync': 'false' }
+    },
+
+    /* ── highperformanceformat — needs inline config first ── */
+    {
+      id: 'highperformanceformat-config',
+      enabled: true,
+      type: 'inline',
+      code: `atOptions={'key':'efcbf04d5d9aa2ab70930eccd37b2820','format':'iframe','height':50,'width':320,'params':{}};`
+    },
+    {
+      id: 'highperformanceformat',
+      enabled: true,
+      type: 'src',
+      src: 'https://www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js',
+      attrs: {}
+    },
+
+    /* ── ADD MORE BANNER SCRIPTS BELOW ───────────────────────
+       {
+         id: 'my-banner-network',
+         enabled: true,
+         type: 'src',          // 'src' or 'inline'
+         src: 'https://...',
+         attrs: { 'data-zone': '999' }
+       }
+    ────────────────────────────────────────────────────────── */
+
+  ];
+
+
+  /* ──────────────────────────────────────────────────────────
+     TIMING SETTINGS
+  ────────────────────────────────────────────────────────── */
+  var SETTINGS = {
+    bannerDelay:   1200,   // ms after page load before loading banner ads
+    popunderDelay: 2500,   // ms after first user interaction before firing popunders
+    popupDelay:    1500,   // ms after first user interaction before firing popups
   };
-  
+
+
+  /* ══════════════════════════════════════════════════════════
+     ENGINE — do not edit below unless you know what you're doing
+  ══════════════════════════════════════════════════════════ */
+
   /**
-   * Load ads safely after page content
+   * Injects one script entry (src or inline) into <body>.
+   * Errors are caught individually so one bad script can't break others.
    */
-  function loadAds() {
+  function injectScript(entry) {
+    if (!entry.enabled) return;
     try {
-      // Load first ad script asynchronously
-      const adScript1 = document.createElement('script');
-      adScript1.type = 'text/javascript';
-      adScript1.async = true;
-      adScript1.src = 'https://pl28120168.effectivegatecpm.com/a8/d0/49/a8d0498b8dafa67dfc94c7ff817bbbbc.js';
-      adScript1.onerror = function() {
-        console.warn('Ad script 1 failed to load');
-      };
-      adScript1.onload = function() {
-        console.log('Ad script 1 loaded successfully');
-      };
-      document.body.appendChild(adScript1);
-      
-      // Load second ad script asynchronously
-      const adScript2 = document.createElement('script');
-      adScript2.type = 'text/javascript';
-      adScript2.async = true;
-      adScript2.src = 'https://pl28120183.effectivegatecpm.com/0f/2c/43/0f2c431bf8d3dae6a00a87b5ff3dc9eb.js';
-      adScript2.onerror = function() {
-        console.warn('Ad script 2 failed to load');
-      };
-      adScript2.onload = function() {
-        console.log('Ad script 2 loaded successfully');
-      };
-      document.body.appendChild(adScript2);
-      
-      // Load fpyf8 ad script asynchronously
-      const adScriptFpyf8 = document.createElement('script');
-      adScriptFpyf8.src = 'https://fpyf8.com/88/tag.min.js';
-      adScriptFpyf8.setAttribute('data-zone', '187556');
-      adScriptFpyf8.async = true;
-      adScriptFpyf8.setAttribute('data-cfasync', 'false');
-      adScriptFpyf8.onerror = function() {
-        console.warn('Fpyf8 ad script failed to load');
-      };
-      adScriptFpyf8.onload = function() {
-        console.log('Fpyf8 ad script loaded successfully');
-      };
-      document.body.appendChild(adScriptFpyf8);
-      
-      // Load third ad script (highperformanceformat) - configuration first, then loader
-      const adConfig3 = document.createElement('script');
-      adConfig3.type = 'text/javascript';
-      adConfig3.textContent = `
-	atOptions = {
-		'key' : 'efcbf04d5d9aa2ab70930eccd37b2820',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-      `;
-      document.body.appendChild(adConfig3);
-      
-      const adScript3 = document.createElement('script');
-      adScript3.type = 'text/javascript';
-      adScript3.async = true;
-      adScript3.src = 'https://www.highperformanceformat.com/efcbf04d5d9aa2ab70930eccd37b2820/invoke.js';
-      adScript3.onerror = function() {
-        console.warn('Ad script 3 failed to load');
-      };
-      adScript3.onload = function() {
-        console.log('Ad script 3 loaded successfully');
-      };
-      document.body.appendChild(adScript3);
-      
-      console.log('All ad scripts initiated');
-      
-      // Load monetag popunder script asynchronously
-      const monetagScript = document.createElement('script');
-      monetagScript.type = 'text/javascript';
-      monetagScript.async = true;
-      monetagScript.setAttribute('data-cfasync', 'false');
-      monetagScript.textContent = `
-/*<![CDATA[/* */
-(function(){var y=window,v="${AD_CONFIG.adScriptVar}",e=[["siteId",923*757-4*28+4543465],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],x=["d3d3LmludGVsbGlwb3B1cC5jb20vY2dhcmxpYy5taW4uY3Nz","ZDNtcjd5MTU0ZDJxZzUuY2xvdWRmcm9udC5uZXQvRkJOL2ZsZWFmbGV0LmFqYXgubWluLmpz"],h=-1,o,d,w=function(){clearTimeout(d);h++;if(x[h]&&!(1784918438000<(new Date).getTime()&&1<h)){o=y.document.createElement("script");o.type="text/javascript";o.async=!0;var g=y.document.getElementsByTagName("script")[0];o.src="https://"+atob(x[h]);o.crossOrigin="anonymous";o.onerror=w;o.onload=function(){clearTimeout(d);y[v.slice(0,16)+v.slice(0,16)]||w()};d=setTimeout(w,5E3);g.parentNode.insertBefore(o,g)}};if(!y[v]){try{Object.freeze(y[v]=e)}catch(e){}w()}})();
-/*]]>/* */
-      `;
-      document.body.appendChild(monetagScript);
-      
-      // Load popunder trigger after monetag script has time to initialize
-      setTimeout(function() {
-        try {
-          let popunderCount = 0;
-          let hasTriggered = false;
-          
-          function triggerPopunder() {
-            if (popunderCount >= AD_CONFIG.maxPopunders) return;
-            
-            try {
-              // Use the correct variable name
-              const adScript = window[AD_CONFIG.adScriptVar];
-              if (adScript && typeof adScript.triggerPopunder === 'function') {
-                adScript.triggerPopunder();
-                popunderCount++;
-              }
-            } catch (e) {
-              // Silently fail - don't block page
-            }
-          }
-          
-          // Only trigger on specific user actions (not every click)
-          // Trigger once on first click after page load
-          document.addEventListener('click', function(e) {
-            if (!hasTriggered) {
-              hasTriggered = true;
-              setTimeout(triggerPopunder, 500);
-            }
-          }, { once: true, passive: true });
-          
-        } catch (e) {
-          // Silently fail - ads are optional
-        }
-      }, AD_CONFIG.initDelay);
-      
-    } catch (e) {
-      // Silently fail - ads shouldn't break the site
-      console.warn('Ad script loading failed (non-critical):', e);
-    }
-  }
-  
-  // Initialize ad loading - ensure body exists
-  function initAds() {
-    if (document.body) {
-      setTimeout(loadAds, AD_CONFIG.loadDelay);
-    } else {
-      // Wait for body to be ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(loadAds, AD_CONFIG.loadDelay);
-        });
+      var el = document.createElement('script');
+      el.type = 'text/javascript';
+
+      if (entry.type === 'inline') {
+        el.textContent = entry.code;
       } else {
-        // Use a small delay to ensure body is ready
-        setTimeout(function() {
-          if (document.body) {
-            setTimeout(loadAds, AD_CONFIG.loadDelay);
-          } else {
-            // Fallback: try again after a short delay
-            setTimeout(initAds, 100);
-          }
-        }, 100);
+        el.async = true;
+        el.src = entry.src;
+        if (entry.attrs) {
+          Object.keys(entry.attrs).forEach(function (k) {
+            el.setAttribute(k, entry.attrs[k]);
+          });
+        }
+        el.onerror = function () {
+          console.warn('[AdManager] Failed to load: ' + entry.id);
+        };
       }
+
+      document.body.appendChild(el);
+    } catch (e) {
+      console.warn('[AdManager] Error injecting ' + entry.id + ':', e);
     }
   }
-  
-  // Start initialization
-  initAds();
-  
+
+  /** Load all banner scripts after a short delay. */
+  function loadBanners() {
+    BANNER_SCRIPTS.forEach(function (entry) {
+      injectScript(entry);
+    });
+  }
+
+  /** Load all popunder scripts — called on first user interaction. */
+  function loadPopunders() {
+    POPUNDER_SCRIPTS.forEach(function (entry) {
+      injectScript(entry);
+    });
+  }
+
+  /** Load all popup scripts — called on first user interaction. */
+  function loadPopups() {
+    POPUP_SCRIPTS.forEach(function (entry) {
+      injectScript(entry);
+    });
+  }
+
+  /**
+   * Attach a one-time trigger for popunders + popups.
+   * Fires on the first click OR first scroll — whichever comes first.
+   */
+  function attachInteractionTrigger() {
+    var triggered = false;
+
+    function onInteraction() {
+      if (triggered) return;
+      triggered = true;
+
+      // Remove listeners immediately to prevent double-fire
+      document.removeEventListener('click',  onInteraction, true);
+      document.removeEventListener('scroll', onInteraction, true);
+
+      setTimeout(loadPopunders, SETTINGS.popunderDelay);
+      setTimeout(loadPopups,    SETTINGS.popupDelay);
+    }
+
+    document.addEventListener('click',  onInteraction, { once: true, capture: true, passive: true });
+    document.addEventListener('scroll', onInteraction, { once: true, capture: true, passive: true });
+  }
+
+  /** Entry point — called once DOM is ready. */
+  function init() {
+    // Banners load automatically after a short delay
+    setTimeout(loadBanners, SETTINGS.bannerDelay);
+
+    // Popunders + popups wait for the user to interact
+    attachInteractionTrigger();
+  }
+
+  // Boot
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
 })();
-
-

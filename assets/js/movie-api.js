@@ -726,6 +726,7 @@ class MovieAPIManager {
 
     return {
       id: series.id.toString(),
+      mediaType: 'tv',
       title: series.name,
       year: series.first_air_date ? new Date(series.first_air_date).getFullYear() : 'N/A',
       genre: genreText,
@@ -742,7 +743,7 @@ class MovieAPIManager {
       embedUrl: `${MOVIE_DATABASE.baseUrl}${series.id}`,
       genreIds: series.genre_ids || [],
       status: series.status || 'TV Series',
-      seasons: series.seasons || []
+      seasons: (series.seasons || []).filter(s => s.season_number > 0)
     };
   }
 

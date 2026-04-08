@@ -5,500 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Guy 2021</title>
+  <title>Watch - FilmHaven</title>
+  <meta name="description" content="Watch movies and TV shows in HD quality on FilmHaven.">
 
-  <!-- 
-    - favicon
-  -->
   <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
-
-  <!-- 
-    - custom css link
-  -->
-  <link rel="stylesheet" href="./assets/css/style.css">
-
-  <!-- 
-    - google font link
-  -->
+  <link rel="stylesheet" href="./assets/css/style.css?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Monetag -->
-  <meta name="monetag" content="0f54a557bb1f88f3fc04961e28004070">
-
-
-  <style>
-    /* Modern Navigation Styles - Netflix Style */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 15px 0;
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
-    
-    .header.active {
-      background: #000;
-    }
-
-    .header .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      transition: transform 0.3s ease;
-    }
-
-    .logo:hover {
-      transform: scale(1.05);
-    }
-
-    .logo img {
-      height: 40px;
-      width: auto;
-    }
-
-    .navbar {
-      display: flex;
-      align-items: center;
-    }
-
-    .navbar-list {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .navbar-link {
-      position: relative;
-      color: #f1f5f9;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      background: transparent;
-      border: 2px solid transparent;
-    }
-
-    .navbar-link::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
-      border-radius: 8px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
-
-    .navbar-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-    
-    .navbar-link:hover::before {
-      opacity: 1;
-    }
-    
-    .navbar-link.active {
-      color: #E50914;
-      font-weight: 700;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    /* Mobile Navigation */
-    @media (max-width: 768px) {
-      .header {
-        padding: 12px 0;
-      }
-
-      .header .container {
-        padding: 0 15px;
-      }
-
-      .logo img {
-        height: 35px;
-      }
-
-      .navbar-list {
-        gap: 15px;
-      }
-
-      .navbar-link {
-        padding: 10px 16px;
-        font-size: 14px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .navbar-list {
-        gap: 10px;
-      }
-
-      .navbar-link {
-        padding: 8px 12px;
-        font-size: 13px;
-      }
-    }
-
-    /* Movie Detail Layout */
-    .movie-detail-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
-    
-    .movie-detail-banner {
-      max-width: 300px;
-      margin: 0 auto;
-      position: relative;
-    }
-    
-    .movie-detail-banner img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    
-    .movie-detail-content {
-      width: 100%;
-      max-width: 100%;
-      padding-left: 0;
-    }
-    
-    /* Make container wider for video player */
-    .movie-detail .container {
-      max-width: 1600px;
-      padding: 0 4%;
-    }
-    
-    @media (min-width: 1400px) {
-      .movie-detail .container {
-        padding: 0 60px;
-      }
-    }
-    
-    /* Server Tabs - Netflix Style */
-    .server-tabs {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-    
-    .server-tab {
-      padding: 14px 24px;
-      background: rgba(42, 42, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 14px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-align: center;
-      min-height: 48px;
-      backdrop-filter: blur(10px);
-      flex: 1;
-      min-width: 140px;
-    }
-    
-    .server-tab:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.4);
-      transform: translateY(-2px);
-    }
-    
-    .server-tab.active {
-      background: #E50914;
-      border-color: #E50914;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
-    }
-    
-    .server-tab .server-icon {
-      font-size: 18px;
-    }
-    
-    .server-tab .server-quality {
-      font-size: 11px;
-      opacity: 0.9;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    /* Video Player Container - Netflix Style - LARGE */
-    .video-player-container {
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 1);
-      margin-top: 40px;
-      margin-bottom: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      width: 100%;
-      max-width: 100%;
-    }
-    
-    .video-player-wrapper {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio - Netflix standard */
-      background: #000;
-      min-height: 500px;
-    }
-    
-    @media (min-width: 768px) {
-      .video-player-wrapper {
-        min-height: 600px;
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      .video-player-wrapper {
-        min-height: 700px;
-      }
-    }
-    
-    @media (min-width: 1400px) {
-      .video-player-wrapper {
-        min-height: 800px;
-      }
-    }
-    
-    .video-player-wrapper::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-    
-    .video-player-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      z-index: 0;
-    }
-    
-    .video-player-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      background: rgba(0, 0, 0, 0.95);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-    }
-    
-    .player-info {
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-    
-    .player-info span {
-      color: #E50914;
-      font-weight: 700;
-    }
-    
-    .player-actions {
-      display: flex;
-      gap: 12px;
-    }
-    
-    .player-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      color: #fff;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    
-    .player-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: #E50914;
-      transform: translateY(-2px);
-    }
-    
-    .player-btn:active {
-      transform: translateY(0);
-    }
-    
-    .player-btn ion-icon {
-      font-size: 18px;
-    }
-    
-    #fullscreen-btn:hover {
-      background: #E50914;
-      border-color: #E50914;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .movie-detail-layout {
-        flex-direction: column;
-        gap: 30px;
-      }
-      
-      .movie-detail-banner {
-        max-width: 250px;
-        margin: 0 auto;
-      }
-      
-      .movie-detail-content {
-        padding-left: 0;
-        width: 100%;
-      }
-      
-      .movie-detail .container {
-        padding: 0 4%;
-      }
-      
-      .server-tabs {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .server-tab {
-        padding: 12px 18px;
-        font-size: 13px;
-        min-width: 100%;
-      }
-      
-      .video-player-controls {
-        padding: 12px 15px;
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
-      }
-      
-      .player-actions {
-        align-self: flex-end;
-      }
-      
-      /* Video player on mobile - LARGE */
-      .video-player-wrapper {
-        padding-bottom: 56.25%; /* Keep 16:9 aspect ratio */
-        min-height: 400px;
-      }
-      
-      .video-player-container {
-        margin-top: 30px;
-        margin-bottom: 30px;
-        border-radius: 12px;
-        box-shadow: 0 12px 48px rgba(0, 0, 0, 1);
-        width: 100%;
-      }
-      
-      /* Video player controls on mobile */
-      .video-player-controls {
-        padding: 16px;
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-      }
-      
-      .player-info {
-        font-size: 14px;
-        width: 100%;
-      }
-      
-      .player-actions {
-        align-self: flex-end;
-        width: 100%;
-        justify-content: flex-end;
-      }
-      
-      .player-btn {
-        padding: 10px 14px;
-        font-size: 13px;
-      }
-      
-      .player-btn ion-icon {
-        font-size: 16px;
-      }
-      
-      /* Make server tabs more mobile-friendly */
-      .server-tabs {
-        margin-bottom: 15px;
-      }
-    }
-
-    /* Simplified Footer Styles */
-    .footer {
-      background: var(--black);
-      padding: 40px 0;
-      text-align: center;
-    }
-
-    .footer-logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .footer-logo .logo {
-      transition: transform 0.3s ease;
-    }
-
-    .footer-logo .logo:hover {
-      transform: scale(1.05);
-    }
-
-    .footer-logo .logo img {
-      height: 50px;
-      width: auto;
-    }
-  </style>
 
   <!-- Monetag -->
   <meta name="monetag" content="0f54a557bb1f88f3fc04961e28004070">
@@ -514,290 +28,180 @@
 
   <!-- Fpyf8 Ad Script -->
   <script src="https://fpyf8.com/88/tag.min.js" data-zone="187556" async data-cfasync="false"></script>
-  </head>
+</head>
 
-<body id="#top">
+<body id="top">
 
-  <!-- 
-    - #HEADER
-  -->
-
+  <!-- #HEADER -->
   <header class="header" data-header>
     <div class="container">
 
-      <a href="./index.html" class="logo">
+      <a href="./movies.html" class="logo">
         <img src="./assets/images/filmhaven.svg" alt="FilmHaven logo">
       </a>
 
       <nav class="navbar" data-navbar>
         <ul class="navbar-list">
           <li>
-            <a href="./movies.html" class="navbar-link">Movies</a>
-          </li>
-          <li>
-            <a href="./tv-series.html" class="navbar-link">TV Shows</a>
+            <a href="./movies.html" class="navbar-link">Home</a>
           </li>
         </ul>
       </nav>
 
+      <div class="genre-dropdown-wrapper">
+        <button class="genre-dropdown-btn" id="genre-dropdown-btn" onclick="toggleGenrePanel(event)" style="border:1.5px solid var(--accent-border);background:var(--accent-dim);color:var(--accent);padding:0.45rem 1rem;border-radius:9999px;">
+          <ion-icon name="grid-outline"></ion-icon>
+          Genres
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </button>
+        <div class="genre-panel" id="genre-panel">
+          <div class="genre-panel-title">Choose Genre</div>
+          <div class="genre-panel-grid">
+            <a href="./movies.html?genre=28&name=Action" class="genre-panel-item">Action</a>
+            <a href="./movies.html?genre=12&name=Adventure" class="genre-panel-item">Adventure</a>
+            <a href="./movies.html?genre=16&name=Animation" class="genre-panel-item">Animation</a>
+            <a href="./movies.html?genre=35&name=Comedy" class="genre-panel-item">Comedy</a>
+            <a href="./movies.html?genre=80&name=Crime" class="genre-panel-item">Crime</a>
+            <a href="./movies.html?genre=99&name=Documentary" class="genre-panel-item">Documentary</a>
+            <a href="./movies.html?genre=18&name=Drama" class="genre-panel-item">Drama</a>
+            <a href="./movies.html?genre=10751&name=Family" class="genre-panel-item">Family</a>
+            <a href="./movies.html?genre=14&name=Fantasy" class="genre-panel-item">Fantasy</a>
+            <a href="./movies.html?genre=36&name=History" class="genre-panel-item">History</a>
+            <a href="./movies.html?genre=27&name=Horror" class="genre-panel-item">Horror</a>
+            <a href="./movies.html?genre=9648&name=Mystery" class="genre-panel-item">Mystery</a>
+            <a href="./movies.html?genre=10749&name=Romance" class="genre-panel-item">Romance</a>
+            <a href="./movies.html?genre=878&name=Science Fiction" class="genre-panel-item">Sci-Fi</a>
+            <a href="./movies.html?genre=53&name=Thriller" class="genre-panel-item">Thriller</a>
+            <a href="./movies.html?genre=10752&name=War" class="genre-panel-item">War</a>
+            <a href="./movies.html?genre=37&name=Western" class="genre-panel-item">Western</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </header>
 
-
-
-
-
+  <!-- Genre overlay for mobile -->
+  <div class="genre-overlay" id="genre-overlay" onclick="closeGenrePanel()"></div>
 
   <main>
-    <article>
+    <section class="cinema-detail">
+      <div class="container">
 
-      <!-- 
-        - #MOVIE DETAIL
-      -->
+        <!-- Back button -->
+        <a href="./movies.html" class="cinema-back-btn" id="back-btn">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          Back to Browse
+        </a>
 
-      <section class="movie-detail">
-        <div class="container">
+        <!-- Player Section -->
+        <div class="cinema-player-section" id="cinema-player-section">
 
-          <div class="movie-detail-layout">
-            <figure class="movie-detail-banner">
+          <!-- Server Tabs (compact pills) -->
+          <div class="cinema-server-tabs" id="cinema-server-tabs">
+            <!-- Populated by JS -->
+          </div>
 
-              <img src="./assets/images/movie-4.png" alt="Free guy movie poster">
-
-              <button class="play-btn" id="main-play-btn">
-                <ion-icon name="play-circle-outline"></ion-icon>
-              </button>
-
-            </figure>
-
-            <div class="movie-detail-content">
-
-            <p class="detail-subtitle">New Episodes</p>
-
-            <h1 class="h1 detail-title">
-              Free <strong>Guy</strong>
-            </h1>
-
-            <div class="meta-wrapper">
-
-              <div class="badge-wrapper">
-                <div class="badge badge-fill">PG 13</div>
-
-                <div class="badge badge-outline">HD</div>
-              </div>
-
-              <div class="ganre-wrapper">
-                <a href="#">Comedy,</a>
-
-                <a href="#">Action,</a>
-
-                <a href="#">Adventure,</a>
-
-                <a href="#">Science Fiction</a>
-              </div>
-
-              <div class="date-time">
-
-                <div>
-                  <ion-icon name="calendar-outline"></ion-icon>
-
-                  <time datetime="2021">2021</time>
-                </div>
-
-                <div>
-                  <ion-icon name="time-outline"></ion-icon>
-
-                  <time datetime="PT115M">115 min</time>
+          <!-- Video Player -->
+          <div class="cinema-player-container">
+            <div class="cinema-player-wrapper">
+              <iframe id="cinema-player-iframe" 
+                      src="" 
+                      frameborder="0" 
+                      allowfullscreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      loading="eager"></iframe>
             </div>
-
-            </div>
-
-            <p class="storyline">
-              A bank teller called Guy realizes he is a background character in an open world video game called Free
-              City that will
-              soon go offline.
-            </p>
-
-            <div class="details-actions">
-
-              <button class="share">
-                <ion-icon name="share-social"></ion-icon>
-
-                <span>Share</span>
-              </button>
-
-              <div class="title-wrapper">
-                <p class="title">Autoembed.cc</p>
-
-                <p class="text">Streaming Server</p>
+            <div class="cinema-player-bar">
+              <div class="player-info">
+                <span id="cinema-now-playing">Select a server to start watching</span>
               </div>
-
-              <button class="btn btn-primary" id="watch-now-btn">
-                <ion-icon name="play"></ion-icon>
-
-                <span>Watch Now</span>
-              </button>
-
-            </div>
-
-            <!-- Movie Servers Section -->
-            <div class="movie-servers">
-              <h3 class="servers-title">Available Servers</h3>
-              
-              <!-- Server Tabs -->
-              <div class="server-tabs" id="server-tabs">
-                <!-- Server tabs will be loaded dynamically -->
-              </div>
-              
-              <!-- Video Player Container -->
-              <div class="video-player-container" id="video-player-container">
-                <div class="video-player-wrapper">
-                  <iframe id="video-player-iframe" 
-                          src="" 
-                          frameborder="0" 
-                          allowfullscreen
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          loading="eager"></iframe>
-                </div>
-                <div class="video-player-controls">
-                  <div class="player-info">
-                    <span id="current-server-name">Select a server to start watching</span>
-                  </div>
-                  <div class="player-actions">
-                    <button class="player-btn" id="fullscreen-btn" title="Fullscreen">
-                      <ion-icon name="expand-outline"></ion-icon>
-                    </button>
-                    <button class="player-btn" id="refresh-btn" title="Refresh">
-                      <ion-icon name="refresh-outline"></ion-icon>
-                    </button>
-                  </div>
-                </div>
+              <div class="player-actions">
+                <button class="player-btn" id="refresh-btn" title="Refresh">
+                  <ion-icon name="refresh-outline"></ion-icon>
+                </button>
               </div>
             </div>
-
-
-            </div>
-
           </div>
 
         </div>
-      </section>
 
-
-
-
-
-      <!-- 
-        - #TV SERIES
-      -->
-
-      <section class="tv-series">
-        <div class="container">
-
-          <p class="section-subtitle">Best TV Series</p>
-
-          <h2 class="h2 section-title">World Best TV Series</h2>
-
-          <ul class="movies-list">
-            <!-- Related content will be loaded dynamically by JavaScript -->
-          </ul>
-
+        <!-- Movie Info Card -->
+        <div class="cinema-info-card" id="cinema-info-card" style="opacity:0;transition:opacity 0.4s ease;">
+          <div class="cinema-info-header">
+            <img id="cinema-poster" class="cinema-info-poster" src="" alt="">
+            <div class="cinema-info-text">
+              <h1 class="cinema-info-title" id="cinema-title">&nbsp;</h1>
+              <div class="cinema-info-meta" id="cinema-meta">
+                <div class="badge badge-fill" id="cinema-rating">—</div>
+                <div class="badge badge-outline" id="cinema-quality">HD</div>
+                <span style="color: var(--text-dim);" id="cinema-year">—</span>
+                <span style="color: var(--text-dim);" id="cinema-duration">—</span>
+              </div>
+              <div class="cinema-info-genres" id="cinema-genres"></div>
+              <p class="cinema-info-overview" id="cinema-overview">&nbsp;</p>
+            </div>
+          </div>
         </div>
-      </section>
 
-    </article>
+      </div>
+    </section>
   </main>
 
-
-
-
-
-  <!-- 
-    - #FOOTER
-  -->
-
+  <!-- #FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-logo">
-        <a href="./index.html" class="logo">
-          <img src="./assets/images/logo.svg" alt="FilmHaven logo">
+        <a href="./movies.html" class="logo">
+          <img src="./assets/images/filmhaven.svg" alt="FilmHaven logo">
         </a>
       </div>
     </div>
   </footer>
 
-
-
-
-
-  <!-- 
-    - #GO TO TOP
-  -->
-
   <a href="#top" class="go-top" data-go-top>
     <ion-icon name="chevron-up"></ion-icon>
   </a>
 
-  <!-- 
-    - #FULLSCREEN VIDEO CONTAINER
-  -->
-
-  <div class="fullscreen-video-container" id="fullscreen-video-container">
-    <div class="fullscreen-title" id="fullscreen-title">Movie Title</div>
-    <button class="fullscreen-close-btn" id="fullscreen-close-btn">&times;</button>
-    <div class="fullscreen-video-wrapper">
-      <iframe class="fullscreen-video-iframe" id="fullscreen-video-iframe" allowfullscreen></iframe>
-      <div class="fullscreen-video-controls">
-        <div class="fullscreen-control-row">
-          <button class="fullscreen-control-btn" id="fullscreen-play-btn" title="Play/Pause">
-            <ion-icon name="play"></ion-icon>
-          </button>
-          <div class="fullscreen-progress-container">
-            <div class="fullscreen-progress-bar" id="fullscreen-progress-bar">
-              <div class="fullscreen-progress-fill" id="fullscreen-progress-fill"></div>
-            </div>
-          </div>
-          <div class="fullscreen-time-display">
-            <span id="fullscreen-current-time">0:00</span> / <span id="fullscreen-total-time">2:00:00</span>
-          </div>
-          <button class="fullscreen-control-btn" id="fullscreen-volume-btn" title="Volume">
-            <ion-icon name="volume-high"></ion-icon>
-          </button>
-          <button class="fullscreen-control-btn" id="fullscreen-exit-btn" title="Exit Fullscreen">
-            <ion-icon name="contract"></ion-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-  <!-- 
-    - ionicon link
-  -->
+  <!-- ionicon link -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-  <!-- 
-    - custom js link - Load AFTER ads
-  -->
-  <script src="./assets/js/movie-api.js"></script>
-  <script src="./assets/js/movie-details.js?v=2"></script>
+  <script src="./assets/js/movie-api.js?v=4"></script>
+  <script src="./assets/js/script.js"></script>
 
-  <!-- Movie Details Page Script -->
+  <!-- Cinema Mode Script -->
   <script>
+    let currentMovie = null;
 
-    // Load movie details page
-    async function loadMovieDetailsPageCustom() {
+    // Genre panel toggle
+    function toggleGenrePanel(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const btn = document.getElementById('genre-dropdown-btn');
+      const panel = document.getElementById('genre-panel');
+      const overlay = document.getElementById('genre-overlay');
+      const isActive = panel.classList.contains('active');
+      if (isActive) { closeGenrePanel(); } 
+      else { btn.classList.add('active'); panel.classList.add('active'); overlay.classList.add('active'); }
+    }
+    function closeGenrePanel() {
+      document.getElementById('genre-dropdown-btn').classList.remove('active');
+      document.getElementById('genre-panel').classList.remove('active');
+      document.getElementById('genre-overlay').classList.remove('active');
+    }
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.genre-dropdown-wrapper')) closeGenrePanel();
+    });
+
+    // Load movie details
+    async function loadMovieDetails() {
       const urlParams = new URLSearchParams(window.location.search);
       const movieId = urlParams.get('id');
       const type = urlParams.get('type');
       
       if (!movieId) {
-        console.log('No movie ID provided, showing default movie');
-        handleDefaultMovieDetails();
+        showNoMovie();
         return;
       }
       
@@ -810,292 +214,150 @@
         }
         
         if (movie) {
-          updateMovieDetailsPage(movie, type);
+          currentMovie = movie;
+          displayMovieInfo(movie, type);
+          loadServers(movie, type);
         } else {
-          console.error('Movie/TV show not found, showing default movie');
-          handleDefaultMovieDetails();
+          showNoMovie();
         }
       } catch (error) {
         console.error('Error loading movie details:', error);
-        handleDefaultMovieDetails();
+        showNoMovie();
       }
     }
 
-    // Update movie details page with movie data
-    function updateMovieDetailsPage(movie, type = 'movie') {
-      // Update page title
+    // Display movie info in cinema card
+    function displayMovieInfo(movie, type) {
       document.title = `${movie.title} - FilmHaven`;
       
-      // Update movie poster
-      const moviePoster = document.querySelector('.movie-detail-banner img');
-      if (moviePoster) {
-        moviePoster.src = movie.poster;
-        moviePoster.alt = `${movie.title} movie poster`;
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      
+      // Poster
+      const poster = document.getElementById('cinema-poster');
+      if (poster) { poster.src = movie.poster; poster.alt = movie.title; }
+      
+      // Title
+      document.getElementById('cinema-title').textContent = movie.title;
+      
+      // Meta
+      set('cinema-rating', `${movie.rating} ★`);
+      set('cinema-quality', movie.quality || 'HD');
+      set('cinema-year', movie.year);
+      set('cinema-duration', movie.duration || '—');
+      
+      // Genres
+      const genresEl = document.getElementById('cinema-genres');
+      if (genresEl && movie.genre) {
+        genresEl.innerHTML = movie.genre.split(', ').map(g => `<span>${g}</span>`).join('');
       }
       
-      // Update movie title
-      const movieTitle = document.querySelector('.detail-title');
-      if (movieTitle) {
-        movieTitle.innerHTML = `<strong>${movie.title}</strong>`;
-      }
+      // Overview
+      set('cinema-overview', movie.overview || '');
       
-      // Update movie year
-      const movieYear = document.querySelector('.date-time time[datetime]');
-      if (movieYear) {
-        movieYear.textContent = movie.year;
-        movieYear.setAttribute('datetime', movie.year);
-      }
-      
-      // Update movie duration
-      const movieDuration = document.querySelector('.date-time time[datetime="PT115M"]');
-      if (movieDuration) {
-        movieDuration.textContent = movie.duration;
-        movieDuration.setAttribute('datetime', `PT${movie.duration.replace(' min', 'M')}`);
-      }
-      
-      // Update movie genres
-      const movieGenres = document.querySelector('.ganre-wrapper');
-      if (movieGenres) {
-        const genres = movie.genre.split(', ');
-        movieGenres.innerHTML = genres.map(genre => `<a href="#">${genre}</a>`).join(', ');
-      }
-      
-      // Update movie rating
-      const movieRating = document.querySelector('.badge-wrapper .badge:first-child');
-      if (movieRating) {
-        movieRating.textContent = `${movie.rating}★`;
-      }
-      
-      // Update movie quality
-      const movieQuality = document.querySelector('.badge-wrapper .badge:last-child');
-      if (movieQuality) {
-        movieQuality.textContent = movie.quality;
-      }
-      
-      // Update movie description
-      const movieDescription = document.querySelector('.storyline');
-      if (movieDescription) {
-        movieDescription.textContent = movie.overview;
-      }
-      
-      // Update movie servers
-      loadMovieServers(movie, type);
-      
-      
-      // Update play button
-      const playBtn = document.getElementById('main-play-btn');
-      if (playBtn) {
-        playBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          openMoviePlayer(movie.embedUrl, movie.title);
-        });
-      }
-      
-      // Update watch now button
-      const watchNowBtn = document.getElementById('watch-now-btn');
-      if (watchNowBtn) {
-        watchNowBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          openMoviePlayer(movie.embedUrl, movie.title);
-        });
-      }
+      // Fade in
+      const card = document.getElementById('cinema-info-card');
+      if (card) card.style.opacity = '1';
     }
 
-    // Store current movie globally
-    let currentMovie = null;
-    
-    // Load movie servers
-    function loadMovieServers(movie, type = 'movie') {
-      // Store current movie
-      currentMovie = movie;
-      
-      const serverTabs = document.getElementById('server-tabs');
+    // Load servers
+    function loadServers(movie, type = 'movie') {
+      const serverTabs = document.getElementById('cinema-server-tabs');
       if (!serverTabs) return;
+      
+      const servers = [
+        { name: 'Server 1', url: type === 'tv' ? `https://vidsrc.me/embed/tv/${movie.id}` : `https://vidsrc.me/embed/movie/${movie.id}`, quality: 'HD' },
+        { name: 'Server 2', url: `https://player.autoembed.cc/embed/${type === 'tv' ? 'tv' : 'movie'}/${movie.id}`, quality: 'HD' },
+        { name: 'Server 3', url: type === 'tv' ? `https://vidcloud.icu/embed/tv/${movie.id}` : `https://vidcloud.icu/embed/movie/${movie.id}`, quality: 'HD' }
+      ];
       
       serverTabs.innerHTML = '';
       
-      const servers = [
-        {
-          name: 'VidSrc',
-          url: type === 'tv' ? `https://vidsrc.me/embed/tv/${movie.id}` : `https://vidsrc.me/embed/movie/${movie.id}`,
-          type: 'Primary',
-          quality: 'HD',
-          status: 'online',
-          icon: 'play-circle',
-          adWarning: false
-        },
-        {
-          name: 'SuperEmbed',
-          url: `https://superembed.stream/e/${movie.id}`,
-          type: 'Alternative',
-          quality: 'HD',
-          status: 'online',
-          icon: 'play-circle',
-          adWarning: false
-        },
-        {
-          name: 'VidCloud',
-          url: type === 'tv' ? `https://vidcloud.icu/embed/tv/${movie.id}` : `https://vidcloud.icu/embed/movie/${movie.id}`,
-          type: 'Alternative',
-          quality: 'HD',
-          status: 'online',
-          icon: 'play-circle',
-          adWarning: false
-        }
-      ];
-      
       servers.forEach((server, index) => {
-        const serverTab = document.createElement('div');
-        serverTab.className = 'server-tab';
-        if (index === 0) serverTab.classList.add('active');
+        const tab = document.createElement('button');
+        tab.className = 'cinema-server-tab' + (index === 0 ? ' active' : '');
+        tab.innerHTML = `<ion-icon name="play-circle"></ion-icon> ${server.name} <span style="opacity:0.7;font-size:0.65rem;">${server.quality}</span>`;
         
-        serverTab.innerHTML = `
-          <ion-icon name="${server.icon}" class="server-icon"></ion-icon>
-          <span>${server.name}</span>
-          <span class="server-quality">${server.quality}</span>
-        `;
-        
-        serverTab.addEventListener('click', () => {
-          // Remove active class from all tabs
-          document.querySelectorAll('.server-tab').forEach(tab => tab.classList.remove('active'));
-          // Add active class to clicked tab
-          serverTab.classList.add('active');
-          // Load the server
-          loadServer(server.url, server.name, server.adWarning);
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.cinema-server-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          loadVideo(server.url, server.name);
         });
         
-        serverTabs.appendChild(serverTab);
+        serverTabs.appendChild(tab);
       });
       
-      // Load the first server by default
+      // Auto-load first server
       if (servers.length > 0) {
-        loadServer(servers[0].url, servers[0].name, servers[0].adWarning);
+        loadVideo(servers[0].url, servers[0].name);
       }
     }
-    
-    // Load server in the embedded player
-    function loadServer(url, name, adWarning) {
-      const iframe = document.getElementById('video-player-iframe');
-      const serverName = document.getElementById('current-server-name');
+
+    // Load video into iframe
+    function loadVideo(url, serverName) {
+      const iframe = document.getElementById('cinema-player-iframe');
+      const nowPlaying = document.getElementById('cinema-now-playing');
       
-      if (iframe && serverName) {
-        // Clear iframe first
+      if (iframe) {
         iframe.src = '';
-        
-        // Set iframe attributes
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-        iframe.setAttribute('allowfullscreen', 'true');
-        iframe.setAttribute('loading', 'eager');
-        
-        // Set server info
-        let infoText = `<span>Now playing:</span> ${currentMovie ? currentMovie.title : name}`;
-        if (adWarning) {
-          infoText += ' <span style="color: #ffaa00;">(May contain ads)</span>';
-        }
-        serverName.innerHTML = infoText;
-        
-        // Show the container
-        const videoContainer = document.getElementById('video-player-container');
-        if (videoContainer) {
-          videoContainer.style.display = 'block';
-        }
-        
-        // Small delay before loading
         setTimeout(() => {
-          // Load the video
           iframe.src = url;
-          console.log('Loading server:', name, 'URL:', url);
-          
-          // Add error handling
-          iframe.onerror = function() {
-            console.error('Iframe failed to load:', url);
-            serverName.innerHTML = `<span style="color: #ff4444;">Error loading ${name}. <a href="${url}" target="_blank" style="color: #E50914; text-decoration: underline;">Try opening in new tab</a></span>`;
-          };
-          
-          // Add load event
-          let loadTimeout;
-          iframe.onload = function() {
-            console.log('Iframe loaded successfully:', name);
-            clearTimeout(loadTimeout);
-          };
-          
-          // Add timeout detection
-          loadTimeout = setTimeout(() => {
-            console.warn('Video player may be stuck in loading state');
-            serverName.innerHTML = `<span style="color: #ffaa00;">Video taking longer than expected. <a href="${url}" target="_blank" style="color: #E50914; text-decoration: underline;">Try opening in new tab</a> or try a different server.</span>`;
-          }, 10000);
-        }, 200);
+        }, 100);
+      }
+      
+      if (nowPlaying && currentMovie) {
+        nowPlaying.innerHTML = `<span>Now playing:</span> ${currentMovie.title} — ${serverName}`;
       }
     }
 
-    // Open server
-    function openServer(url, name, adWarning) {
-      if (name === 'Direct Link') {
-        window.open(url, '_blank');
-      } else {
-        openMoviePlayer(url, name, adWarning);
+    // Show no movie message
+    function showNoMovie() {
+      const section = document.getElementById('cinema-player-section');
+      if (section) section.style.display = 'none';
+      
+      const card = document.getElementById('cinema-info-card');
+      if (card) {
+        card.innerHTML = `
+          <div style="text-align:center;padding:var(--spacing-2xl);">
+            <p style="color:var(--accent);font-size:var(--fs-xl);margin-bottom:var(--spacing-lg);">No movie selected</p>
+            <p style="color:var(--text-muted);margin-bottom:var(--spacing-xl);">Browse our collection and click on a title to watch.</p>
+            <a href="./movies.html" class="btn btn-primary">Browse Content</a>
+          </div>`;
+        card.style.opacity = '1';
       }
     }
 
-    // Handle default movie details
-    function handleDefaultMovieDetails() {
-      const defaultMovie = {
-        id: '550988',
-        title: 'Free Guy',
-        year: 2021,
-        genre: 'Action, Adventure, Comedy',
-        rating: '7.7',
-        duration: '115 min',
-        quality: 'HD',
-        poster: './assets/images/movie-4.png',
-        overview: 'A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.',
-        embedUrl: 'https://player.autoembed.cc/embed/movie/550988'
-      };
-      updateMovieDetailsPage(defaultMovie);
-    }
-    
-    // Initialize player controls
-    function initializePlayerControls() {
+    // Player controls
+    function initControls() {
       const fullscreenBtn = document.getElementById('fullscreen-btn');
       const refreshBtn = document.getElementById('refresh-btn');
-      const iframe = document.getElementById('video-player-iframe');
+      const iframe = document.getElementById('cinema-player-iframe');
       
-      if (fullscreenBtn) {
+      if (fullscreenBtn && iframe) {
         fullscreenBtn.addEventListener('click', () => {
-          if (iframe.requestFullscreen) {
-            iframe.requestFullscreen();
-          } else if (iframe.webkitRequestFullscreen) {
-            iframe.webkitRequestFullscreen();
-          } else if (iframe.msRequestFullscreen) {
-            iframe.msRequestFullscreen();
-          }
+          if (iframe.requestFullscreen) iframe.requestFullscreen();
+          else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+          else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         });
       }
       
-      if (refreshBtn) {
+      if (refreshBtn && iframe) {
         refreshBtn.addEventListener('click', () => {
-          const currentSrc = iframe.src;
+          const src = iframe.src;
           iframe.src = '';
-          setTimeout(() => {
-            iframe.src = currentSrc;
-          }, 100);
+          setTimeout(() => { iframe.src = src; }, 100);
         });
       }
     }
-    
-    // Initialize everything when page loads
+
+    // Init
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Movie details page loaded');
-      loadMovieDetailsPageCustom();
-      initializePlayerControls();
+      loadMovieDetails();
+      initControls();
     });
   </script>
 
-
-  <!-- Safe Ad Scripts - Load after page content -->
+  <!-- Safe Ad Scripts -->
   <script src="./assets/js/ads-loader.js"></script>
-
-  <!-- EffectiveGateCPM Ad -->
   <script async="async" data-cfasync="false" src="https://pl28120178.effectivegatecpm.com/39118a42908635bbe024c3dfce4caa5a/invoke.js"></script>
   <div id="container-39118a42908635bbe024c3dfce4caa5a"></div>
 </body>

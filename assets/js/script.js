@@ -227,12 +227,18 @@ function getFallbackMovies(type, limit) {
  * Create a movie card element
  */
 function createMovieCard(movie) {
+  const isTV = movie.mediaType === 'tv';
+  const detailUrl = isTV
+    ? `./tv-show-details.html?id=${movie.id}`
+    : `./movie-details.html?id=${movie.id}`;
+
   const card = document.createElement('li');
   card.className = 'movie-card';
   card.innerHTML = `
-    <a href="./movie-details.html?id=${movie.id}">
+    <a href="${detailUrl}">
       <figure class="card-banner">
         <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
+        <span class="card-type-badge">${isTV ? 'TV' : 'Film'}</span>
         <div class="card-info">
           <h3 class="card-title">${movie.title}</h3>
           <div class="card-meta">
@@ -253,6 +259,14 @@ function createMovieCard(movie) {
       <time datetime="${movie.year}">${movie.year}</time>
     </div>
   `;
+
+  // Fade in image once loaded
+  const img = card.querySelector('img');
+  if (img) {
+    img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+    if (img.complete && img.naturalWidth) img.classList.add('loaded');
+  }
+
   return card;
 }
 
